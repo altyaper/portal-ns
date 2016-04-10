@@ -13,6 +13,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
+    "socket.io": "^1.4.5",
     "stylus": "0.42.3"
   }
 }
