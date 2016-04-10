@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var port = process.env.PORT || 5000;
 var routes = require('./routes/index');
 var app = express();
 var http = require('http').Server(app);
@@ -46,7 +46,7 @@ io.on('connection', function(socket){
 
 });
 
-http.listen(3000, function(){
+http.listen(port, function(){
   console.log('listening on *:3000');
 });
 
