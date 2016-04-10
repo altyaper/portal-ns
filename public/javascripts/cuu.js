@@ -55,6 +55,7 @@ function createPeerConnections(stream){
 
   localPeer.onaddstream = function(evt){
     console.log("Recived stream from Hermosillo");
+    console.log(evt);
     var url = window.URL.createObjectURL(evt.stream);
     cuuvideo.src = url;
   }

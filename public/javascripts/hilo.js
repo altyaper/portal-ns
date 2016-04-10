@@ -55,6 +55,7 @@ function createPeerConnections(stream){
 
   localPeer.onaddstream = function gotRemoteStream(event){
     console.log("Recive stream from Chihuahua!");
+    console.log(event);
     var url = window.URL.createObjectURL(event.stream);
     hilovideo.src = url;
   }
