@@ -1,0 +1,23 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+a {
+  color: #00b7ff;
+}
+video {
+  width: 50%;
+  display: inline-block;
+}
+.remote {
+  position: absolute;
+  width: 100%;
+}
+.local {
+  position: absolute;
+  width: 300px;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid #808080;
+  z-index: 1;
+}
