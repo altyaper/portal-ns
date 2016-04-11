@@ -25,7 +25,11 @@ function fail(error){
 
 function createPeerConnections(stream){
 
-  var localPeer = new webkitRTCPeerConnection(null);
+  var config = {
+    "iceServers": [{"url": "stun:stun.l.google.com:19302"}]
+  };
+
+  var localPeer = new RTCPeerConnection(config);
 
   localPeer.onicecandidate = function(evt){
     if(evt.candidate){
