@@ -10,11 +10,11 @@ var constraints = window.constraints = {
   audio: true
 };
 
-navigator.getUserMedia(constraints, success, fail);
+var connection = navigator.getUserMedia(constraints, success, fail);
 
 function success(stream){
   var url = window.URL.createObjectURL(stream);
-  cuuvideo.src = url;
+  hilovideo.src = url;
   createPeerConnections(stream);
 }
 
@@ -25,9 +25,8 @@ function fail(error){
 
 function createPeerConnections(stream){
 
-  var config = {
-    "iceServers": [{"url": "stun:stun.l.google.com:19302"}]
-  };
+  //We are using a LAN so we don't need a STUN server
+  var config = null;
 
   var localPeer = new RTCPeerConnection(config);
 
@@ -36,16 +35,22 @@ function createPeerConnections(stream){
       socket.emit("ice candidate hilo", evt.candidate);
     }
   }
+
+  //Add the stream to the local RTCPeerConnection
   localPeer.addStream(stream);
 
   socket.on("remote description", function(desc){
 
-    console.log("Ya tienes la descripcion de Chihuahua");
+    //Setting the remote descrition
     localPeer.setRemoteDescription(new RTCSessionDescription(desc));
 
+    //Time to create and Answer with out local description
     localPeer.createAnswer(function(desc){
 
+      //We put it as local
       localPeer.setLocalDescription(desc);
+
+      //Then we emmit it
       socket.emit("hermosillo answer", desc);
 
     },logError);
@@ -57,11 +62,10 @@ function createPeerConnections(stream){
     localPeer.addIceCandidate(can);
   });
 
+  //If everything is cool, then we have access to the stream
   localPeer.onaddstream = function gotRemoteStream(event){
-    console.log("Recive stream from Chihuahua!");
-    console.log(event);
     var url = window.URL.createObjectURL(event.stream);
-    hilovideo.src = url;
+    cuuvideo.src = url;
   }
 
   function logError(error){
