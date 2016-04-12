@@ -1,6 +1,6 @@
 {
-  "name": "kitchen",
-  "version": "0.0.0",
+  "name": "Portal NS",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"

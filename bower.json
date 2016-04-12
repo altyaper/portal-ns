@@ -1,25 +1,24 @@
 {
-  "name": "portal-ns",
-  "description": "",
-  "main": "app.js",
+  "name": "Portal",
+  "description": "A permanent video conference between the 3 offices of Nearsoft (HMO, CUU & CDMEX) using \"portals\".",
   "authors": [
-    "Jorge Chavez <echavez@nearsoft.com>"
+    "echavezNS <echavez@nearsoft.com>"
   ],
   "license": "MIT",
   "keywords": [
-    "portal",
-    "nearsoft",
-    "webRTC"
+    "Portal",
+    "Nearsoft",
+    "Chihuahua",
+    "Hermosillo",
+    "CDMX"
   ],
   "moduleType": [],
   "homepage": "",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "public/"
   ],
   "dependencies": {
     "font-awesome": "^4.6.0"
