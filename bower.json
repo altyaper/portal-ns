@@ -1,0 +1,27 @@
+{
+  "name": "portal-ns",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Jorge Chavez <echavez@nearsoft.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "portal",
+    "nearsoft",
+    "webRTC"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.6.0"
+  }
+}
