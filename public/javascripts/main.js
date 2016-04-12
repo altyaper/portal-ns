@@ -1,8 +1,17 @@
 'use strict';
 
 $(document).ready(function() {
-  $(".remote").height($(window).height());
+
+  setLayout();
   $(document).resize(function() {
-    $(".remote").height($(window).height());
+    setLayout();
   });
+  function setLayout(){
+    $(".remote").height($(window).height());
+  }
+
+  $("#hide-local-preview").click(function(){
+    $(".r-b-corner").toggleClass("hidden");
+  });
+
 });
