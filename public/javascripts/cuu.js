@@ -14,7 +14,7 @@ $(document).ready(function() {
 
   function success(stream){
     var url = window.URL.createObjectURL(stream);
-    hilovideo.src = url;
+    cuuvideo.src = url;
     createPeerConnections(stream);
   }
 
@@ -63,7 +63,7 @@ $(document).ready(function() {
       console.log("Recived stream from Hermosillo");
       console.log(evt);
       var url = window.URL.createObjectURL(evt.stream);
-      cuuvideo.src = url;
+      hilovideo.src = url;
     }
 
   }
