@@ -1,6 +1,7 @@
 body
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
   margin 0
+  background-image: url("/images/header-bg.jpg");
 a
   color: #00B7FF
 
@@ -8,14 +9,42 @@ video
   width: 50%
   display: inline-block
 
+
 .remote
   position: absolute
   width: 100%
 
-.local
-  position: absolute
-  width: 300px
+.r-b-corner
+  position absolute
   right 20px
   bottom 20px
-  border 1px solid gray
-  z-index: 1
+  z-index 1
+  overflow: hidden
+  transition: all 0.5s ease
+  &.hidden
+    #hide-local-preview
+      transform: rotate(180deg)
+    .options
+      bottom 0
+    .local
+      transform translateY(120%)
+
+  .options
+    text-align: right
+    padding 5px 0px
+    position: absolute
+    bottom 0
+    width: 100%
+    z-index: 2
+    a
+      font-size 15px
+      color white
+      display: inline-block
+      padding: 10px
+      transition: all 0.5s ease
+
+.local
+  border 1px solid whitesmoke
+  width 250px
+  border-radius: 3px
+  transition: all 0.5s ease
