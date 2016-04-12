@@ -1,6 +1,6 @@
 # Portal NS
 
-## Clone the proyect
+## Clone the project
 `git clone https://github.com/echavezNS/portal-ns.git`
 
 ## Install the dependencies
