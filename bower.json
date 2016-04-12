@@ -1,0 +1,29 @@
+{
+  "name": "Portal",
+  "description": "A permanent video conference between the 3 offices of Nearsoft (HMO, CUU & CDMEX) using \"portals\".",
+  "main": "",
+  "authors": [
+    "echavezNS <echavez@nearsoft.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Portal",
+    "Nearsoft",
+    "Chihuahua",
+    "Hermosillo",
+    "CDMX"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.6.0"
+  }
+}
