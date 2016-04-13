@@ -6,7 +6,16 @@
         "after",
         "afterEach",
         "before",
-        "beforeEach"
+        "beforeEach",
+        "$",
+        "jQuery",
+        "document",
+        "navigator",
+        "io",
+        "window",
+        "RTCPeerConnection",
+        "RTCIceCandidate",
+        "RTCSessionDescription"
     ],
 
     "node": true,
