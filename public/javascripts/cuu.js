@@ -22,6 +22,11 @@ $(document).ready(function() {
         console.error('Error: ', error);
     }
 
+    
+    socket.on("get current", function(current){
+
+    });
+
 
     function createPeerConnections(stream) {
 
