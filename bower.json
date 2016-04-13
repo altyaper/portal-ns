@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "font-awesome": "^4.6.0",
-    "jquery": "^2.2.3"
+    "jquery": "^2.2.3",
+    "webrtc-adapter.js": "^0.0.1"
   }
 }
