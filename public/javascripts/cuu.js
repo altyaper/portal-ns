@@ -58,13 +58,19 @@ $(document).ready(function() {
         socket.on('ice candidate hilo', function(candidate) {
             var can = new RTCIceCandidate(candidate);
             localPeer.addIceCandidate(can);
+
         });
 
         localPeer.onaddstream = function(evt) {
-            var url = window.URL.createObjectURL(evt.stream);
-            hilovideo.src = url;
+              var url = window.URL.createObjectURL(evt.stream);
+              setConnectionDone();
+              hilovideo.src = url;
         };
 
     }
 
+    function setConnectionDone(){
+      $("#fullscreen").addClass("active");
+      $(".center-portal").fadeOut();
+    }
 });

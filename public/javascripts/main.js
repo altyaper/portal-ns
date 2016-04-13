@@ -21,8 +21,6 @@ $(document).ready(function() {
           local.mozRequestFullScreen();
       } else if ($(this).get(0).webkitRequestFullscreen) {
           local.webkitRequestFullscreen();
-      }else {
-        console.log("Ninguno chavo");
       }
     });
 

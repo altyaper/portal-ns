@@ -66,6 +66,7 @@ $(document).ready(function() {
         //If everything is cool, then we have access to the stream
         localPeer.onaddstream = function gotRemoteStream (event) {
             var url = window.URL.createObjectURL(event.stream);
+            setConnectionDone();
             cuuvideo.src = url;
         };
 
@@ -75,4 +76,8 @@ $(document).ready(function() {
 
     }
 
+    function setConnectionDone(){
+      $("#fullscreen").addClass("active");
+      $(".center-portal").fadeOut();
+    }
 });
