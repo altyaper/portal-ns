@@ -9,6 +9,8 @@ video
   width: 50%
   display: inline-block
 
+.animated
+  transition: all 0.5s ease
 
 .remote
   position: absolute
@@ -48,3 +50,14 @@ video
   width 250px
   border-radius: 3px
   transition: all 0.5s ease
+
+.options-screen
+  position: absolute
+  right 20px
+  top 20px
+  a
+    color white
+    transform: scale(1,1)
+    display: inline-block
+    &:hover
+      transform: scale(2,2)
