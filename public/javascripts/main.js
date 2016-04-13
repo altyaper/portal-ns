@@ -1,9 +1,8 @@
 'use strict';
-
 $(document).ready(function() {
 
     setLayout();
-    $(document).resize(function() {
+    $(window).resize(function() {
         setLayout();
     });
     function setLayout() {
