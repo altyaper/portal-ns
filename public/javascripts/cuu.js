@@ -12,11 +12,11 @@ $(document).ready(function() {
 
     navigator.getUserMedia(constraints, success, fail);
 
-    function success(stream) {
-        var url = window.URL.createObjectURL(stream);
-        hilovideo.src = url;
-        createPeerConnections(stream);
-    }
+  function success(stream){
+    var url = window.URL.createObjectURL(stream);
+    cuuvideo.src = url;
+    createPeerConnections(stream);
+  }
 
     function fail(error) {
         console.error('Error: ', error);
@@ -25,10 +25,7 @@ $(document).ready(function() {
 
     function createPeerConnections(stream) {
 
-        var config = {
-            'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]
-        };
-        var pc_config = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+        var config = null;
 
         var localPeer = new RTCPeerConnection(config);
 
@@ -59,12 +56,12 @@ $(document).ready(function() {
             localPeer.addIceCandidate(can);
         });
 
-        localPeer.onaddstream = function(evt) {
-            console.log('Recived stream from Hermosillo');
-            console.log(evt);
-            var url = window.URL.createObjectURL(evt.stream);
-            cuuvideo.src = url;
-        }
+    localPeer.onaddstream = function(evt){
+      console.log("Recived stream from Hermosillo");
+      console.log(evt);
+      var url = window.URL.createObjectURL(evt.stream);
+      hilovideo.src = url;
+    }
 
     }
 

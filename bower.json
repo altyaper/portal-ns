@@ -1,7 +1,6 @@
 {
   "name": "Portal",
   "description": "A permanent video conference between the 3 offices of Nearsoft (HMO, CUU & CDMEX) using \"portals\".",
-  "main": "",
   "authors": [
     "echavezNS <echavez@nearsoft.com>"
   ],
