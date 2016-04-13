@@ -13,17 +13,14 @@
     "Hermosillo",
     "CDMX"
   ],
-  "moduleType": [],
-  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
-    "public/",
-    "test",
-    "tests"
+    "public/"
   ],
   "dependencies": {
-    "font-awesome": "^4.6.0"
+    "font-awesome": "^4.6.0",
+    "jquery": "^2.2.3"
   }
 }
