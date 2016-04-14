@@ -10,7 +10,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-var current = 0;
+var current = false;
 
 
 
@@ -27,26 +27,25 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', routes);
 
 io.on('connection', function(socket){
 
-  socket.on('remote description', function(desc){
-    io.emit("remote description", desc);
-  });
+  current = Object.keys(io.sockets.sockets).length;
 
-  socket.on("hermosillo answer", function(desc){
-    io.emit("hermosillo answer", desc);
-  });
+  socket.join("portal");
 
-  socket.on("ice candidate cuu", function(candidate){
-    io.emit("ice candidate cuu", candidate);
-  });
+  if(current == 2){
+    io.emit("message", {type:"Start", data:null});
+  }
 
-  socket.on("ice candidate hilo", function(candidate){
-    io.emit("ice candidate hilo", candidate);
-  });
 
+  io.emit("get current", current);
+
+  socket.on("message", function(data){
+    io.emit("message", data);
+  });
 
 
 });

@@ -1,78 +1,63 @@
 'use strict';
 $(document).ready(function() {
     var socket = io();
+    var pc;
+    var configuration = null;
+    var localVideo = document.getElementById("localvideo");
+    var remoteVideo = document.getElementById("remotevideo");
 
-    var cuuvideo  = document.getElementById('cuuvideo');
-    var hilovideo  = document.getElementById('hilovideo');
+// run start(true) to initiate a call
+function start(isCaller) {
+    pc = new RTCPeerConnection(configuration);
 
-    var constraints = window.constraints = {
-        video: true,
-        audio: true
+    // send any ice candidates to the other peer
+    pc.onicecandidate = function (evt) {
+        socket.emit("message", {type:"candidate", data:evt.candidate});
     };
 
-    navigator.getUserMedia(constraints, success, fail);
+    // once remote stream arrives, show it in the remote video element
+    pc.onaddstream = function (evt) {
+        remoteVideo.src = window.URL.createObjectURL(evt.stream);
+    };
 
-    function success(stream) {
-        var url = window.URL.createObjectURL(stream);
-        cuuvideo.src = url;
-        createPeerConnections(stream);
-    }
+    // get the local stream, show it in the local video element and send it
+    navigator.getUserMedia({ "audio": true, "video": true }, function (stream) {
 
-    function fail(error) {
-        console.error('Error: ', error);
-    }
+        localVideo.src = window.URL.createObjectURL(stream);
+        console.log("isCaller? " + isCaller);
+        pc.addStream(stream);
 
-    
-    socket.on("get current", function(current){
+        if (isCaller){
+            pc.createOffer(gotDescription);          
+        }
+        else{
+            pc.createAnswer(gotDescription, 
+              function(error){
+                  console.log(error);
+              });
+        }
 
+        function gotDescription(desc) {
+            pc.setLocalDescription(desc);
+            socket.emit("message", {type:"description", data:desc});
+        }
+    }, function(error){
+      console.log(error);
     });
+}
 
 
-    function createPeerConnections(stream) {
+socket.on("message", function(evt){
+  console.log(evt);
+      if (!pc)
+        start(false);
 
-        var config = null;
-
-        var localPeer = new RTCPeerConnection(config);
-
-        localPeer.negotiationneeded = function(evt) {
-            console.log(evt);
-        };
-
-        localPeer.onicecandidate = function gotMyIceCandidate (evt) {
-            if(evt.candidate) {
-                socket.emit('ice candidate cuu', evt.candidate);
-            }
-        };
-
-        localPeer.addStream(stream);
-
-        localPeer.createOffer(function gotLocalDescription (desc) {
-
-            localPeer.setLocalDescription(desc);
-
-            socket.emit('remote description', desc);
-
-            socket.on('hermosillo answer', function(desc) {
-                localPeer.setRemoteDescription(new RTCSessionDescription(desc));
-            });
-
-        }, function(error) {
-            console.log('Error in offer: ', error);
-        });
-
-        socket.on('ice candidate hilo', function(candidate) {
-            var can = new RTCIceCandidate(candidate);
-            localPeer.addIceCandidate(can);
-
-        });
-
-        localPeer.onaddstream = function(evt) {
-              var url = window.URL.createObjectURL(evt.stream);
-              setConnectionDone();
-              hilovideo.src = url;
-        };
-
-    }
+    if (evt.type == "description")
+        pc.setRemoteDescription(new RTCSessionDescription(evt.data));
+    else if (evt.type == "candidate")
+        pc.addIceCandidate(new RTCIceCandidate(evt.data));
+});
+    
 
     function setConnectionDone(){
       $("#fullscreen").addClass("active");
