@@ -1,7 +1,6 @@
 body
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+  font: 14px Helvetica, Arial, sans-serif
   margin 0
-  background-image: url("/images/header-bg.jpg");
 a
   color: #00B7FF
 
@@ -67,86 +66,3 @@ video
     display: inline-block
     &:hover
       transform: scale(2,2)
-
-.center-portal
-  display flex
-  align-items: center
-  position: absolute
-  width: 100%
-  height: 100%
-  z-index: 1
-  .overlay
-    background-color: rgba(0,0,0,0.3)
-    position: absolute
-    width: 100%
-    height: 100%
-  .in-wrapper
-    overflow: hidden
-    position: relative
-    z-index: 2
-    width 300px
-    margin: 0 auto
-    .mask-portal
-      position: absolute
-      width: 100%
-      height: 115px
-      top 8px
-      overflow: hidden
-      z-index: 1
-      &:after
-        content "Connecting"
-        text-align: center
-        width: 100%
-        color white
-        font-weight: bold
-        position: relative
-        display: inline-block
-        animation: up1 3s infinite
-        animation-timing-function cubic-bezier(.17,.67,.86,.31)
-    .portal
-      height 15px
-      border-radius: 50%
-      width: 100%
-      background-color: black
-      &.red
-        border 2px solid red
-        margin-bottom: 100px
-        position relative
-        &:after
-          content ""
-          position: absolute
-          width: 100%
-          height: 100%
-          background-color: red
-          border-radius: 50%
-          -webkit-filter blur(15px)
-          animation light 3s infinite
-          animation-fill-mode: both
-      &.blue
-        border 2px solid blue
-        position: relative
-        &:after
-          content ""
-          position: absolute
-          width: 100%
-          height: 100%
-          background-color: blue
-          border-radius: 50%
-          -webkit-filter blur(15px)
-          animation light 2.8s infinite
-          animation-fill-mode: both
-
-
-@keyframes up1
-  0%
-    top -20px
-  100%
-    top 110px
-
-@keyframes light
-  0%
-    opacity: 0.9
-  90%
-    opacity: 0.1
-  100%
-    opacity 0.9

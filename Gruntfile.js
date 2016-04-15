@@ -12,6 +12,18 @@ module.exports = function(grunt) {
               'public/javascripts/*.js'
             ]
         },
+        uglify: {
+            files: {
+              'public/dest/minified.js': ['public/javascripts/*.js']
+          }
+        },
+        cssmin: {
+            target: {
+                files: {
+                    'public/dest/minified.css': ['public/stylesheets/*.css']
+                }
+            }
+        },
         jscs: {
             options: {
                 config: '.jscsrc',
@@ -21,14 +33,17 @@ module.exports = function(grunt) {
         },
         watch: {
             files: ['<%= jshint.files %>'],
-            tasks: ['jscs','jshint']
+            tasks: ['jscs','jshint','uglify','cssmin']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('default', ['jscs','jshint']);
+    grunt.registerTask('minify', ['uglify','cssmin']);
 
 };

@@ -1,31 +1,33 @@
 'use strict';
 $(document).ready(function() {
+
+    var islocal = true;
+
     var socket = io();
 
-    var cuuvideo  = document.getElementById('cuuvideo');
-    var hilovideo  = document.getElementById('hilovideo');
+    var localvideo  = document.getElementById('localvideo');
+    var remotevideo  = document.getElementById('remotevideo');
 
-    var constraints = window.constraints = {
+    var constraints = {
         video: true,
         audio: true
     };
+
+    socket.on('give me islocal', function(islocals) {
+        islocal = islocals;
+    });
 
     navigator.getUserMedia(constraints, success, fail);
 
     function success(stream) {
         var url = window.URL.createObjectURL(stream);
-        cuuvideo.src = url;
+        localvideo.src = url;
         createPeerConnections(stream);
     }
 
     function fail(error) {
         console.error('Error: ', error);
     }
-
-    
-    socket.on("get current", function(current){
-
-    });
 
 
     function createPeerConnections(stream) {
@@ -34,26 +36,18 @@ $(document).ready(function() {
 
         var localPeer = new RTCPeerConnection(config);
 
-        localPeer.negotiationneeded = function(evt) {
-            console.log(evt);
-        };
-
-        localPeer.onicecandidate = function gotMyIceCandidate (evt) {
-            if(evt.candidate) {
-                socket.emit('ice candidate cuu', evt.candidate);
-            }
-        };
-
         localPeer.addStream(stream);
 
-        localPeer.createOffer(function gotLocalDescription (desc) {
+        localPeer.createOffer(function (desc) {
 
             localPeer.setLocalDescription(desc);
 
             socket.emit('remote description', desc);
 
             socket.on('hermosillo answer', function(desc) {
+
                 localPeer.setRemoteDescription(new RTCSessionDescription(desc));
+
             });
 
         }, function(error) {
@@ -67,15 +61,21 @@ $(document).ready(function() {
         });
 
         localPeer.onaddstream = function(evt) {
-              var url = window.URL.createObjectURL(evt.stream);
-              setConnectionDone();
-              hilovideo.src = url;
+            var url = window.URL.createObjectURL(evt.stream);
+            setConnectionDone();
+            remotevideo.src = url;
+        };
+
+        localPeer.onicecandidate = function (evt) {
+            if(evt.candidate) {
+                socket.emit('ice candidate cuu', evt.candidate);
+            }
         };
 
     }
 
-    function setConnectionDone(){
-      $("#fullscreen").addClass("active");
-      $(".center-portal").fadeOut();
+    function setConnectionDone() {
+        $('#fullscreen').addClass('active');
+        $('.center-portal').fadeOut();
     }
 });
