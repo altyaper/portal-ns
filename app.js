@@ -10,7 +10,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-var current = false;
+var current = 0;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

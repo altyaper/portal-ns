@@ -29,11 +29,22 @@ function start(isCaller) {
 
     // once remote stream arrives, show it in the remote video element
     pc.onaddstream = function (evt) {
-        remoteVideo.src = window.URL.createObjectURL(evt.stream);        
+        remoteVideo.src = window.URL.createObjectURL(evt.stream);
     };
 
     // get the local stream, show it in the local video element and send it
-    navigator.getUserMedia({ 'audio': true, 'video': true }, function (stream) {
+    navigator.getUserMedia({ 'audio': true, 'video': {
+      "optional": [
+        {
+          "minWidth": "720"
+        },
+        {
+          "minHeight": "1280"
+        }
+        ],
+        "mandatory": {
+
+        } }}, function (stream) {
 
         localVideo.src = window.URL.createObjectURL(stream);
         pc.addStream(stream);
