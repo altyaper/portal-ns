@@ -12,8 +12,6 @@ var io = require('socket.io')(http);
 
 var current = false;
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -32,21 +30,20 @@ app.use('/', routes);
 
 io.on('connection', function(socket){
 
-  current = Object.keys(io.sockets.sockets).length;
-
   socket.join("portal");
+  current = Object.keys(io.sockets.connected).length;
 
-  if(current == 2){
-    io.emit("message", {type:"Start", data:null});
-  }
+  io.emit("join",current);
 
+  console.log(current + " clients");
 
-  io.emit("get current", current);
-
-  socket.on("message", function(data){
-    io.emit("message", data);
+  socket.on("message", function(desc){
+    io.emit("message", desc);
   });
 
+  socket.on("disconnect",function(){
+    console.log(current + " clients");
+  });
 
 });
 
