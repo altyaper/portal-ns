@@ -1,6 +1,5 @@
 'use strict';
 $(document).ready(function() {
-
     var socket = io();
     var pc;
     var configuration = null;
@@ -20,7 +19,7 @@ function start(isCaller) {
 
     // send any ice candidates to the other peer
     pc.onicecandidate = function (evt) {
-        socket.emit("message", {type:"candidate", data : evt.candidate});
+        socket.emit("message", {type:"candidate", data:evt.candidate});
     };
 
     // once remote stream arrives, show it in the remote video element
@@ -39,8 +38,8 @@ function start(isCaller) {
             pc.createOffer(gotDescription, logFail);          
         
         }else{
-
-            pc.createAnswer(gotDescription, logFail);
+            pc.createAnswer(gotDescription, 
+              logFail);
         }
 
         function gotDescription(desc) {
@@ -58,20 +57,25 @@ socket.on("message", function(evt){
     }
 
     if (evt.type == "description"){
-        
+    
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
     
     }else if (evt.type == "candidate"){
-        if(evt.data != null){
+    
+        if(evt.data){
+            console.log(evt.data);
             pc.addIceCandidate(new RTCIceCandidate(evt.data));    
-        } 
+        }
+        
+    
     }
         
 });
 
     function logFail (error){
         console.log(error);
-    }    
+    }
+    
 
     function setConnectionDone(){
       $("#fullscreen").addClass("active");
