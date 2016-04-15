@@ -1,26 +1,35 @@
 'use strict';
-$(document).ready(function() {
-
     var socket = io();
     var pc;
     var configuration = null;
     var localVideo = document.getElementById("localvideo");
     var remoteVideo = document.getElementById("remotevideo");
+    var flag = false;
 
-    socket.on("open", function(current){
-        if (current == 2) {
-            start(true);
-        }
+    socket.on("join", function(current){
+      if(current == 1){
+          flag = true;
+      }
+      if(flag == false){
+        start(true);
+      }
+
+
     });
 
 // run start(true) to initiate a call
 function start(isCaller) {
+    var config = {
+      'iceServers': [{
+      'url': 'stun:stun.l.google.com:19302'
+      }]
+    };
 
-    pc = new RTCPeerConnection(configuration);
+    pc = new RTCPeerConnection(config);
 
     // send any ice candidates to the other peer
     pc.onicecandidate = function (evt) {
-        socket.emit("message", {type:"candidate", data : evt.candidate});
+        socket.emit("message", {type:"candidate", data: evt.candidate});
     };
 
     // once remote stream arrives, show it in the remote video element
@@ -35,36 +44,40 @@ function start(isCaller) {
         pc.addStream(stream);
 
         if (isCaller){
-
+          console.log("offerta");
             pc.createOffer(gotDescription, logFail);
 
         }else{
-
+            console.log("respuesta");
             pc.createAnswer(gotDescription, logFail);
+
         }
 
         function gotDescription(desc) {
             pc.setLocalDescription(desc);
             socket.emit("message", {type:"description", data:desc});
         }
+
     }, logFail);
 }
 
 
 socket.on("message", function(evt){
-
     if (!pc){
         start(false);
     }
 
     if (evt.type == "description"){
-
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
 
     }else if (evt.type == "candidate"){
-        if(evt.data != null){
-            pc.addIceCandidate(new RTCIceCandidate(evt.data));
+
+        if(evt.data){
+            var candidate = new RTCIceCandidate(evt.data);
+            pc.addIceCandidate(candidate, function(success){
+            },logFail);
         }
+
     }
 
 });
@@ -72,9 +85,3 @@ socket.on("message", function(evt){
     function logFail (error){
         console.log(error);
     }
-
-    function setConnectionDone() {
-        $('#fullscreen').addClass('active');
-        $('.center-portal').fadeOut();
-    }
-});

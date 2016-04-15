@@ -29,23 +29,20 @@ app.use('/', routes);
 
 io.on('connection', function(socket){
 
-  socket.on('remote description', function(desc){
-    io.emit("remote description", desc);
+  socket.join("portal");
+  current = Object.keys(io.sockets.connected).length;
+
+  io.emit("join",current);
+
+  console.log(current + " clients");
+
+  socket.on("message", function(desc){
+    io.emit("message", desc);
   });
 
-  socket.on("hermosillo answer", function(desc){
-    io.emit("hermosillo answer", desc);
+  socket.on("disconnect",function(){
+    console.log(current + " clients");
   });
-
-  socket.on("ice candidate cuu", function(candidate){
-    io.emit("ice candidate cuu", candidate);
-  });
-
-  socket.on("ice candidate hilo", function(candidate){
-    io.emit("ice candidate hilo", candidate);
-  });
-
-
 
 });
 

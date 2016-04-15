@@ -1,6 +1,6 @@
 {
   "name": "portal-ns",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -17,11 +17,17 @@
     "stylus": "0.42.3"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "grunt": "^1.0.1",
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
+=======
+    "grunt": "~1.0.1",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+>>>>>>> d276f6d497fe00b736cd207bdf4324c45238458e
     "grunt-jscs": "^2.8.0"
   }
 }
