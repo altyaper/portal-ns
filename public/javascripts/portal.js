@@ -1,11 +1,7 @@
 'use strict';
 var socket = io();
 var pc;
-var configuration = {
-  'iceServers': [{
-    'url': 'stun:stun.l.google.com:19302'
-  }]
-};
+var configuration = null;
 var localVideo = document.getElementById('localvideo');
 var remoteVideo = document.getElementById('remotevideo');
 var flag = false;
