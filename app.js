@@ -29,20 +29,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 
 io.on('connection', function(socket){
-
-  socket.join("portal");
+  
   current = Object.keys(io.sockets.connected).length;
 
-  io.emit("join",current);
+  if (current < 3){
 
-  console.log(current + " clients");
+    socket.join("portal");
 
-  socket.on("message", function(desc){
-    io.emit("message", desc);
-  });
+    io.emit("join",current);
 
-  socket.on("disconnect",function(){
     console.log(current + " clients");
+
+    socket.on("message", function(desc){
+      io.emit("message", desc);
+    });
+
+  } else {
+    console.log("full: " + current);
+    socket.emit("redirect");
+  }
+  socket.on("disconnect",function(){
+     io.emit("refresh");
+     current--;
+     console.log("leaving. Current: " + current);
   });
 
 });

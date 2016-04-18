@@ -36,10 +36,10 @@ function start(isCaller) {
     navigator.getUserMedia({ 'audio': true, 'video': {
       "optional": [
         {
-          "minWidth": "720"
+          "minWidth": "1280"
         },
         {
-          "minHeight": "1280"
+          "minHeight": "720"
         }
         ],
         "mandatory": {
@@ -79,10 +79,16 @@ socket.on('message', function(evt) {
             pc.addIceCandidate(candidate, function(success) {
             }, logFail);
         }
-
     }
-
 });
+
+socket.on("redirect", function(){
+    window.location = "https://www.google.com.mx/search?q=lleno&biw=1855&bih=995&source=lnms&tbm=isch&sa=X&ved=0ahUKEwidxe3p_pjMAhXlw4MKHfxtCN4Q_AUIBigB#imgrc=YUZmn4MLSo7PXM%3A"
+});
+
+socket.on("refresh", function(){
+    location.reload();
+})
 
 function logFail (error) {
         console.log(error);
