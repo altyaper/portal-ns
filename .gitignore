@@ -2,7 +2,7 @@
 logs
 *.log
 .DS_Store
-public/vendor
+# public/vendor
 
 # Runtime data
 pids

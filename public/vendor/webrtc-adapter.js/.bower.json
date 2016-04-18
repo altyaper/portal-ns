@@ -1,0 +1,29 @@
+{
+  "name": "webrtc-adapter.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/helloiampau/samples",
+  "authors": [
+    "Pasquale Boemio <boemianrapsodi@gmail.com>"
+  ],
+  "description": "The webrtc adapter by Google guys",
+  "main": "adapter.js",
+  "keywords": [
+    "webrtc",
+    "adapter.js",
+    "chrome",
+    "firefox"
+  ],
+  "ignore": [
+    "node_modules"
+  ],
+  "license": "MIT",
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.1",
+    "commit": "59951160493d2bc62e313f68dd8a20e1e9cf8c73"
+  },
+  "_source": "https://github.com/helloIAmPau/samples.git",
+  "_target": "^0.0.1",
+  "_originalSource": "webrtc-adapter.js"
+}
