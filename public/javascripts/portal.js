@@ -32,35 +32,42 @@ function start(isCaller) {
         remoteVideo.src = window.URL.createObjectURL(evt.stream);
     };
 
+    // Detect when a user disconnect
+    pc.oniceconnectionstatechange = function() {
+        if(pc.iceConnectionState === 'disconnected') {
+            window.location.reload();
+        }
+    };
+
     // get the local stream, show it in the local video element and send it
     navigator.getUserMedia({ 'audio': true, 'video': {
-      "optional": [
+      'optional': [
         {
-          "minWidth": "1280"
+            'minWidth': '1280'
         },
         {
-          "minHeight": "720"
+            'minHeight': '720'
         }
         ],
-        "mandatory": {
+        'mandatory': {
 
         } }}, function (stream) {
 
-        localVideo.src = window.URL.createObjectURL(stream);
-        pc.addStream(stream);
+            localVideo.src = window.URL.createObjectURL(stream);
+            pc.addStream(stream);
 
-        if (isCaller) {
-            pc.createOffer(gotDescription, logFail);
-        }else {
-            pc.createAnswer(gotDescription, logFail);
-        }
+            if (isCaller) {
+                pc.createOffer(gotDescription, logFail);
+            }else {
+                pc.createAnswer(gotDescription, logFail);
+            }
 
-        function gotDescription(desc) {
+            function gotDescription(desc) {
             pc.setLocalDescription(desc);
             socket.emit('message', {type: 'description', data: desc});
         }
 
-    }, logFail);
+        }, logFail);
 }
 
 
@@ -82,13 +89,13 @@ socket.on('message', function(evt) {
     }
 });
 
-socket.on("redirect", function(){
-    window.location = "https://www.google.com.mx/search?q=lleno&biw=1855&bih=995&source=lnms&tbm=isch&sa=X&ved=0ahUKEwidxe3p_pjMAhXlw4MKHfxtCN4Q_AUIBigB#imgrc=YUZmn4MLSo7PXM%3A"
+socket.on('redirect', function() {
+    window.location = 'https://www.google.com.mx/search?q=lleno&biw=1855&bih=995&source=lnms&tbm=isch&sa=X&ved=0ahUKEwidxe3p_pjMAhXlw4MKHfxtCN4Q_AUIBigB#imgrc=YUZmn4MLSo7PXM%3A';
 });
 
-socket.on("refresh", function(){
-    location.reload();
-})
+socket.on('refresh', function() {
+    window.location.reload();
+});
 
 function logFail (error) {
         console.log(error);
