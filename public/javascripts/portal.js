@@ -75,24 +75,15 @@ function start(isCaller) {
 
 $(window).keyup(function(key){
 
-  //Get all the tracks
+  //When "R" key
+  if(key.keyCode === 82){
+  //This part stop all the LOCAL tracks (Audio and Video)
   var tracks = window.stream.getTracks();
 
-  //When "L" key our local stream is disabled
-  if(key.keyCode === 82){
-    //This part stop all the LOCAL tracks (Audio and Video)
-    $.each(tracks, function(index, track){
-      track.enabled = false;
-    });
-    socket.emit("message", {type: 'toggle stream', data: 0});
-  //When "R" key our local stream is enabled
-  }else if(key.keyCode === 76){
-    //This part start all the LOCAL tracks (Audio and Video)
-    $.each(tracks, function(index, track){
-      track.enabled = true;
-    });
-    socket.emit("message", {type: 'toggle stream', data: 1});
+  tracks.forEach(t => t.enabled = !t.enabled);
+    console.log('Entre');
   }
+
 });
 
 
@@ -109,7 +100,7 @@ socket.on('message', function(evt) {
       var value = evt.data;
 
       if(value === 0){
-        
+
       }else if(value === 1){
 
       }
