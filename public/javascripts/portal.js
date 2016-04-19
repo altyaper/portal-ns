@@ -75,19 +75,24 @@ function start(isCaller) {
 
 $(window).keyup(function(key){
 
-  //When "L" key
+  //Get all the tracks
+  var tracks = window.stream.getTracks();
+
+  //When "L" key our local stream is disabled
   if(key.keyCode === 82){
     //This part stop all the LOCAL tracks (Audio and Video)
-    var tracks = window.stream.getTracks();
     $.each(tracks, function(index, track){
-      track.stop();
+      track.enabled = false;
     });
-  //When "R" key
+    socket.emit("message", {type: 'toggle stream', data: 0});
+  //When "R" key our local stream is enabled
   }else if(key.keyCode === 76){
-    // TODO: This should stop the REMOTE stream
-
+    //This part start all the LOCAL tracks (Audio and Video)
+    $.each(tracks, function(index, track){
+      track.enabled = true;
+    });
+    socket.emit("message", {type: 'toggle stream', data: 1});
   }
-  
 });
 
 
@@ -99,6 +104,15 @@ socket.on('message', function(evt) {
 
     if (evt.type === 'description') {
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
+
+    }else if(evt.type === 'toggle stream'){
+      var value = evt.data;
+
+      if(value === 0){
+        
+      }else if(value === 1){
+
+      }
 
     }else if (evt.type === 'candidate') {
 
