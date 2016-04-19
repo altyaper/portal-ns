@@ -4,15 +4,31 @@ var pc;
 var configuration = null;
 var localVideo = document.getElementById('localvideo');
 var remoteVideo = document.getElementById('remotevideo');
+var canvas = document.getElementById('canvas');
 var flag = false;
 
 socket.on('join', function(current) {
 
     if(current === 1) {
         flag = true;
+        hideShowElement(canvas, true);
+        hideShowElement(remoteVideo, false);
+        hideShowElement(localVideo, false);
+
+        console.log("soy el priemro");
+
+
+      
     }
     if(flag === false) {
+        hideShowElement(canvas, false);
+        hideShowElement(remoteVideo, true);
+        hideShowElement(localVideo, true);
+
+        console.log("soy el segundo");
+
         start(true);
+        
     }
 
 });
@@ -29,13 +45,17 @@ function start(isCaller) {
 
     // once remote stream arrives, show it in the remote video element
     pc.onaddstream = function (evt) {
+        hideShowElement(canvas, false);
+        hideShowElement(remoteVideo, true);
+        hideShowElement(localVideo, true);
         remoteVideo.src = window.URL.createObjectURL(evt.stream);
     };
 
     // Detect when a user disconnect
     pc.oniceconnectionstatechange = function() {
         if(pc.iceConnectionState === 'disconnected') {
-            window.location.reload();
+            console.log('Me cambiaron el estado');
+            // window.location.reload();
         }
     };
 
@@ -75,16 +95,13 @@ function start(isCaller) {
 
 $(window).keyup(function(key){
 
-  //When "L" key
+  //When "R" key
   if(key.keyCode === 82){
     //This part stop all the LOCAL tracks (Audio and Video)
     var tracks = window.stream.getTracks();
-    $.each(tracks, function(index, track){
-      track.stop();
-    });
-  //When "R" key
-  }else if(key.keyCode === 76){
-    // TODO: This should stop the REMOTE stream
+
+    tracks.forEach(t => t.enabled = !t.enabled);
+    console.log('Entre');
 
   }
   
@@ -111,7 +128,7 @@ socket.on('message', function(evt) {
 });
 
 socket.on('redirect', function() {
-    window.location = 'https://www.google.com.mx/search?q=lleno&biw=1855&bih=995&source=lnms&tbm=isch&sa=X&ved=0ahUKEwidxe3p_pjMAhXlw4MKHfxtCN4Q_AUIBigB#imgrc=YUZmn4MLSo7PXM%3A';
+    window.location = 'http://www.uptime.ly/wp-content/uploads/2014/12/tumblr_ms0p7wR1i51r0ufaco3_500.jpg';
 });
 
 socket.on('refresh', function() {
@@ -121,3 +138,8 @@ socket.on('refresh', function() {
 function logFail (error) {
         console.log(error);
     }
+
+function hideShowElement(element, status)
+{
+    element.style.display = (status)? 'inline' : 'none';
+}
