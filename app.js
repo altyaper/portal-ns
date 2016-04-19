@@ -7,7 +7,12 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 var routes = require('./routes/index');
 var app = express();
-var http = require('http').Server(app);
+var fs = require('fs'); 
+var keys = {
+  key: fs.readFileSync('ssl/key.pem'),
+  cert: fs.readFileSync('ssl/cert.pem')
+};
+var http = require('https').Server(keys, app);;
 var io = require('socket.io')(http);
 
 var current = 0;
