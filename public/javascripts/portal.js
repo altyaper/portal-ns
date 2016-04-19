@@ -55,6 +55,8 @@ function start(isCaller) {
 
             localVideo.src = window.URL.createObjectURL(stream);
             pc.addStream(stream);
+            //
+            window.stream = stream;
 
             if (isCaller) {
                 pc.createOffer(gotDescription, logFail);
@@ -69,6 +71,25 @@ function start(isCaller) {
 
         }, logFail);
 }
+
+
+$(window).keyup(function(key){
+
+  //When "L" key
+  if(key.keyCode === 82){
+    //This part stop all the LOCAL tracks (Audio and Video)
+    var tracks = window.stream.getTracks();
+    $.each(tracks, function(index, track){
+      track.stop();
+    });
+  //When "R" key
+  }else if(key.keyCode === 76){
+    // TODO: This should stop the REMOTE stream
+
+  }
+  
+});
+
 
 
 socket.on('message', function(evt) {
