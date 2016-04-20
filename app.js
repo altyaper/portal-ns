@@ -44,6 +44,14 @@ io.on('connection', function(socket){
       io.emit("message", desc);
     });
 
+    socket.on("talk", function(desc){
+      io.emit("talk", desc);
+    });
+
+    socket.on("quiet", function(desc){
+      io.emit("quiet", desc);
+    });    
+
   } else {
     console.log("full: " + current);
     socket.emit("redirect");

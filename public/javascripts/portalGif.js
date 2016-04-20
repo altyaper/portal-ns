@@ -1,6 +1,19 @@
 
 window.onload=init;
 
+var portalColor = window.location.search.split('=')[1];
+var r1, g1, b1;
+
+if (portalColor == "1") {
+  r1=255;
+  g1=130;
+  b1=0;
+}else{
+  r1=1;
+  g1=80;
+  b1=255;
+}
+
 function init() {
   var cv = document.getElementById("canvas");
   var ctx = cv.getContext("2d");
@@ -16,9 +29,9 @@ if (typeof palette === "undefined")
 
    for (var i=0,r,g,b; i<256; i++)
    {
-     r = ~~(255+ 1 * Math.sin(Math.PI * i / 32));
-      g = ~~(190 + 10 * Math.sin(Math.PI * i / 64));
-      b = ~~(1 + 10 * Math.sin(Math.PI * i / 128));
+     r = ~~(r1+ 1 * Math.sin(Math.PI * i / 32));
+      g = ~~(g1 + 10 * Math.sin(Math.PI * i / 64));
+      b = ~~(b1 + 10 * Math.sin(Math.PI * i / 128));
       palette[i] = "rgb(" + ~~r + "," + ~~g + "," + ~~b + ")";
    }
 }
@@ -60,17 +73,3 @@ setTimeout(function() {
       init();
   }, 0);
 }
-
-//redirect
-
-$(window).keyup(function(key){
-
-  //When "R" key
-  if(key.keyCode === 82){
-    
-      window.location = '/'
-  
-
-  }
-  
-});

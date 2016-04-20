@@ -6,35 +6,26 @@ var localVideo = document.getElementById('localvideo');
 var remoteVideo = document.getElementById('remotevideo');
 var canvas = document.getElementById('canvas');
 var flag = false;
+var tracks;
+var video;
+var audio;
 
 socket.on('join', function(current) {
 
     if(current === 1) {
         flag = true;
-        hideShowElement(canvas, true);
-        hideShowElement(remoteVideo, false);
-        hideShowElement(localVideo, false);
-
-        console.log("soy el priemro");
-
-
-      
+        comunication(false);
     }
     if(flag === false) {
-        hideShowElement(canvas, false);
-        hideShowElement(remoteVideo, true);
-        hideShowElement(localVideo, true);
-
-        console.log("soy el segundo");
-
-        start(true);
-        
+        comunication(true);
+        start(true);    
     }
 
 });
 
 // run start(true) to initiate a call
 function start(isCaller) {
+
 
     pc = new RTCPeerConnection(configuration);
 
@@ -45,10 +36,9 @@ function start(isCaller) {
 
     // once remote stream arrives, show it in the remote video element
     pc.onaddstream = function (evt) {
-        hideShowElement(canvas, false);
-        hideShowElement(remoteVideo, true);
-        hideShowElement(localVideo, true);
+        comunication(true);
         remoteVideo.src = window.URL.createObjectURL(evt.stream);
+
     };
 
     // Detect when a user disconnect
@@ -72,6 +62,7 @@ function start(isCaller) {
         'mandatory': {
 
         } }}, function (stream) {
+
 
             localVideo.src = window.URL.createObjectURL(stream);
             pc.addStream(stream);
@@ -98,15 +89,43 @@ $(window).keyup(function(key){
   //When "R" key
   if(key.keyCode === 82){
     //This part stop all the LOCAL tracks (Audio and Video)
-    var tracks = window.stream.getTracks();
+    // debugger;
+    tracks = window.stream.getTracks();
+    video = tracks[0];
+    audio = tracks[1];
 
-    tracks.forEach(t => t.enabled = !t.enabled);
-    console.log('Entre');
+    if (video.enabled && audio.enabled)
+    {
+        socket.emit('quiet');
+    }
+    else
+    {
+        socket.emit('talk'); 
+    }
 
   }
   
 });
 
+socket.on('talk', function(evt){
+    // debugger;
+
+    video.enabled = true; 
+    audio.enabled = true;
+    comunication(true);
+
+});
+
+socket.on('quiet', function(evt){
+    // debugger;
+    tracks = window.stream.getTracks();
+    video = tracks[0];
+    audio = tracks[1];
+
+    video.enabled = false; 
+    audio.enabled = false;
+    comunication(false);
+});
 
 
 socket.on('message', function(evt) {
@@ -139,7 +158,9 @@ function logFail (error) {
         console.log(error);
     }
 
-function hideShowElement(element, status)
+function comunication(enable)
 {
-    element.style.display = (status)? 'inline' : 'none';
+    canvas.style.display = (enable)? 'none' : 'inline';
+    remoteVideo.style.display = (enable)? 'inline' : 'none';
+    localVideo.style.display = (enable)? 'inline' : 'none';
 }
