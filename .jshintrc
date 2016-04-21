@@ -20,7 +20,7 @@
 
     "node": true,
     "devel": true,
-
+    "esversion":6,
     "bitwise": false,
     "curly": false,
     "eqeqeq": true,
