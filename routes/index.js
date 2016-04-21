@@ -10,8 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.get("/trigger", function(req, res){
 
-	console.log("Se apaga");
-
+	io.emit("quiet");
 	res.end();
 
 });
