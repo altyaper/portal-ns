@@ -7,14 +7,4 @@ router.get('/', function(req, res, next) {
   res.render('portal', { title: 'Portal NS :)' });
 });
 
-
-router.get("/trigger", function(req, res){
-
-	io.emit("quiet");
-	res.end();
-
-});
-
-
-
 module.exports = router;

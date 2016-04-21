@@ -12,7 +12,7 @@ var keys = {
   key: fs.readFileSync('ssl/key.pem'),
   cert: fs.readFileSync('ssl/cert.pem')
 };
-var http = require('https').Server(keys,app);;
+var http = require('http').Server(app);;
 var io = require('socket.io')(http);
 
 var current = 0;
@@ -66,6 +66,13 @@ io.on('connection', function(socket){
      console.log("leaving. Current: " + current);
   });
 
+});
+
+app.get("/trigger", function(req, res){
+  io.emit("quiet");
+
+  console.log("pulsito emit quiet");
+  res.end();
 });
 
 http.listen(port, function(){
