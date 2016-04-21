@@ -1,14 +1,14 @@
 'use strict';
-var socket = io();
-var pc;
-var configuration = null;
-var localVideo = document.getElementById('localvideo');
-var remoteVideo = document.getElementById('remotevideo');
-var canvas = document.getElementById('canvas');
-var flag = false;
-var tracks;
-var video;
-var audio;
+var socket = io(),
+    pc,
+    configuration = null,
+    localVideo = document.getElementById('localvideo'),
+    remoteVideo = document.getElementById('remotevideo'),
+    canvas = document.getElementById('canvas'),
+    flag = false,
+    tracks,
+    video,
+    audio;
 
 socket.on('join', function(current) {
 
@@ -18,7 +18,7 @@ socket.on('join', function(current) {
     }
     if(flag === false) {
         comunication(true);
-        start(true);    
+        start(true);
     }
 
 });
@@ -26,7 +26,7 @@ socket.on('join', function(current) {
 // run start(true) to initiate a call
 function start(isCaller) {
 
-
+    // Create the Peer connection to the connected user
     pc = new RTCPeerConnection(configuration);
 
     // send any ice candidates to the other peer
@@ -83,52 +83,51 @@ function start(isCaller) {
         }, logFail);
 }
 
+// TODO: Integrate the gun intead of this
+$(window).keyup(function(key) {
 
-$(window).keyup(function(key){
+    //When "R" key
+    if(key.keyCode === 82) {
 
-  //When "R" key
-  if(key.keyCode === 82){
+        //This part stop all the LOCAL tracks (Audio and Video)
+        tracks = window.stream.getTracks();
+        video = tracks[0];
+        audio = tracks[1];
 
-    //This part stop all the LOCAL tracks (Audio and Video)
-    // debugger;
-    tracks = window.stream.getTracks();
-    video = tracks[0];
-    audio = tracks[1];
+        if (video.enabled && audio.enabled) {
 
-    if (video.enabled && audio.enabled)
-    {
-        socket.emit('quiet');
+            socket.emit('quiet');
+
+        }else {
+
+            socket.emit('talk');
+
+        }
+
+        tracks.forEach(t => t.enabled = !t.enabled);
+
     }
-    else
-    {
-        socket.emit('talk'); 
-    }
-
-
-  tracks.forEach(t => t.enabled = !t.enabled);
-    console.log('Entre');
-  }
 
 });
 
-socket.on('talk', function(evt){
-    // debugger;
+socket.on('talk', function(evt) {
 
-    video.enabled = true; 
+    video.enabled = true;
     audio.enabled = true;
     comunication(true);
 
 });
 
-socket.on('quiet', function(evt){
-    // debugger;
+socket.on('quiet', function(evt) {
+
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];
 
-    video.enabled = false; 
+    video.enabled = false;
     audio.enabled = false;
     comunication(false);
+
 });
 
 
@@ -140,14 +139,14 @@ socket.on('message', function(evt) {
     if (evt.type === 'description') {
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
 
-    }else if(evt.type === 'toggle stream'){
-      var value = evt.data;
+    }else if(evt.type === 'toggle stream') {
+        var value = evt.data;
 
-      if(value === 0){
+        if(value === 0) {
 
-      }else if(value === 1){
+        }else if(value === 1) {
 
-      }
+        }
 
     }else if (evt.type === 'candidate') {
 
@@ -171,8 +170,7 @@ function logFail (error) {
         console.log(error);
     }
 
-function comunication(enable)
-{
+function comunication(enable) {
     canvas.style.display = (enable)? 'none' : 'inline';
     remoteVideo.style.display = (enable)? 'inline' : 'none';
     localVideo.style.display = (enable)? 'inline' : 'none';

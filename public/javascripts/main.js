@@ -11,6 +11,6 @@ $(document).ready(function() {
 
     $('#hide-local-preview').click(function() {
         $('.r-b-corner').toggleClass('hidden');
-    });    
+    });
 
 });
