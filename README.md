@@ -11,4 +11,4 @@ Enter to the portal-ns folder and install npm and bower dependencies
 `bower install`
 
 ## Run the server
-`node app.js`
+`npm start`
