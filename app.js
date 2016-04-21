@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 var routes = require('./routes/index');
 var app = express();
-var fs = require('fs'); 
+var fs = require('fs');
 var keys = {
   key: fs.readFileSync('ssl/key.pem'),
   cert: fs.readFileSync('ssl/cert.pem')
@@ -30,11 +30,10 @@ app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', routes);
 
 io.on('connection', function(socket){
-  
+
   current = Object.keys(io.sockets.connected).length;
 
   if (current < 3){
@@ -55,7 +54,7 @@ io.on('connection', function(socket){
 
     socket.on("quiet", function(desc){
       io.emit("quiet", desc);
-    });    
+    });
 
   } else {
     console.log("full: " + current);

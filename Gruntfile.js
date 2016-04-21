@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         cssmin: {
             target: {
                 files: {
-                    'public/dest/minified.css': ['public/stylesheets/*.css']
+                    'public/stylesheets/styles.min.css': ['public/stylesheets/*.css']
                 }
             }
         },
@@ -44,6 +44,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('default', ['jscs','jshint']);
-    grunt.registerTask('minify', ['uglify','cssmin']);
+    grunt.registerTask('rebuild', ['cssmin']);
 
 };
