@@ -10,8 +10,8 @@ wpi.setup("phys");
 wpi.pinMode(IRin, wpi.INPUT);
 wpi.pullUpDnControl(IRin, wpi.PUD_DOWN);
 
-wpi.wiringPiISR(IRin, wpi.INT_EDGE_BOTH, function(){
-  //This part stop all the LOCAL tracks (Audio and Video)
+wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
+//This part stop all the LOCAL tracks (Audio and Video)
   if(!cut_video){
 
     http.request({

@@ -75,7 +75,7 @@ app.post("/off", function(req, res){
 });
 
 app.post("/on", function(req, res){
-  io.emit("quiet");
+  io.emit("talk");
   console.log("On");
   res.end();
 });
