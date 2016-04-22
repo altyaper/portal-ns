@@ -1,7 +1,7 @@
 var wpi = require("wiring-pi"),
     http = require("http"),
-    port = 5000,
-    host = "https://portal-ns.herokuapp.com",
+    port = process.env.PORT || 5000,
+    host = "portal-ns.herokuapp.com",
     method = "POST";
 
 var IRin = 12;
@@ -17,7 +17,6 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
     http.request({
       method:method,
       host:host,
-      port: port,
       path: "/on"
     }).end();
 
@@ -26,7 +25,6 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
     http.request({
       method:method,
       host:host,
-      port: port,
       path: "/off"
     }).end();
 
