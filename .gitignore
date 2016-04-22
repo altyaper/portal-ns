@@ -2,6 +2,7 @@
 logs
 *.log
 .DS_Store
+public/stylesheets/styles.min.css
 
 # Runtime data
 pids

@@ -68,6 +68,13 @@ io.on('connection', function(socket){
 
 });
 
+app.get("/trigger", function(req, res){
+  io.emit("quiet");
+
+  console.log("pulsito emit quiet");
+  res.end();
+});
+
 http.listen(port, function(){
   console.log('listening on *:'+port);
 });

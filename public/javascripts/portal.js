@@ -140,17 +140,10 @@ function start(isCaller) {
 
     // get the local stream, show it in the local video element and send it
     navigator.getUserMedia({ 'audio': true, 'video': {
-      'optional': [
-        {
-            'minWidth': '1280'
-        },
-        {
-            'minHeight': '720'
-        }
-        ],
-        'mandatory': {
-
-        } }}, function (stream) {
+      'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
+      'mandatory': {}
+    },
+    "iceServers": [{"url": "stun:stun.l.google.com:19302"}]}, function (stream) {
 
             localVideo.src = window.URL.createObjectURL(stream);
             pc.addStream(stream);
@@ -276,6 +269,7 @@ function init() {
             ctx.fillRect(Math.floor(x * vpx), Math.floor(y * vpy), Math.ceil(vpx), Math.ceil(vpy));
         }
     }
+
     // palette cycle speed
     paletteoffset++;
 }
