@@ -1,7 +1,7 @@
 var wpi = require("wiring-pi"),
     http = require("http"),
     port = 5000,
-    host = "localhost",
+    host = "https://portal-ns.herokuapp.com",
     method = "POST";
 
 var IRin = 12;
