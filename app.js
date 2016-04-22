@@ -68,10 +68,15 @@ io.on('connection', function(socket){
 
 });
 
-app.get("/trigger", function(req, res){
+app.post("/off", function(req, res){
   io.emit("quiet");
+  console.log("Off");
+  res.end();
+});
 
-  console.log("pulsito emit quiet");
+app.post("/on", function(req, res){
+  io.emit("quiet");
+  console.log("On");
   res.end();
 });
 
