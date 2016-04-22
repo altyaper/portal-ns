@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  //canvas(id="canvas")
-  div(class="r-b-corner")
+  canvas(id="canvas")
+  div(class="r-b-corner hidden")
     div(class="options")
       a(href="#" id="hide-local-preview")
         i(class="fa fa-chevron-down")
@@ -10,4 +10,3 @@ block content
   video(id="remotevideo" class="remote" autoplay)
   div(id="errorMsg")
   script(src="javascripts/portal.js") 
-  //script(src="javascripts/portalGif.js")    
