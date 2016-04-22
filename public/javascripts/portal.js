@@ -51,17 +51,10 @@ function start(isCaller) {
 
     // get the local stream, show it in the local video element and send it
     navigator.getUserMedia({ 'audio': true, 'video': {
-      'optional': [
-        {
-            'minWidth': '1280'
-        },
-        {
-            'minHeight': '720'
-        }
-        ],
-        'mandatory': {
-
-        } }}, function (stream) {
+      'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
+      'mandatory': {}
+    },
+    "iceServers": [{"url": "stun:stun.l.google.com:19302"}]}, function (stream) {
 
 
             localVideo.src = window.URL.createObjectURL(stream);
@@ -171,7 +164,7 @@ function logFail (error) {
     }
 
 function comunication(enable) {
-    canvas.style.display = (enable)? 'none' : 'inline';
-    remoteVideo.style.display = (enable)? 'inline' : 'none';
-    localVideo.style.display = (enable)? 'inline' : 'none';
+    // canvas.style.display = (enable)? 'none' : 'inline';
+    // remoteVideo.style.display = (enable)? 'inline' : 'none';
+    // localVideo.style.display = (enable)? 'inline' : 'none';
 }
