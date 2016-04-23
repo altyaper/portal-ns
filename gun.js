@@ -1,7 +1,7 @@
 var wpi = require("wiring-pi"),
     http = require("http"),
-    port = 5000,
-    host = "localhost",
+    port = process.env.PORT || 5000,
+    host = "portal-ns.herokuapp.com",
     method = "POST";
 
 var IRin = 12;
@@ -10,14 +10,13 @@ wpi.setup("phys");
 wpi.pinMode(IRin, wpi.INPUT);
 wpi.pullUpDnControl(IRin, wpi.PUD_DOWN);
 
-wpi.wiringPiISR(IRin, wpi.INT_EDGE_BOTH, function(){
-  //This part stop all the LOCAL tracks (Audio and Video)
+wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
+//This part stop all the LOCAL tracks (Audio and Video)
   if(!cut_video){
 
     http.request({
       method:method,
       host:host,
-      port: port,
       path: "/on"
     }).end();
 
@@ -26,7 +25,6 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_BOTH, function(){
     http.request({
       method:method,
       host:host,
-      port: port,
       path: "/off"
     }).end();
 

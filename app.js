@@ -12,7 +12,7 @@ var keys = {
   key: fs.readFileSync('ssl/key.pem'),
   cert: fs.readFileSync('ssl/cert.pem')
 };
-var http = require('https').Server(keys, app);;
+var http = require('http').Server(app);;
 var io = require('socket.io')(http);
 
 var current = 0;
@@ -75,7 +75,7 @@ app.post("/off", function(req, res){
 });
 
 app.post("/on", function(req, res){
-  io.emit("quiet");
+  io.emit("talk");
   console.log("On");
   res.end();
 });
