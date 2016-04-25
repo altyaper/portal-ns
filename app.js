@@ -57,12 +57,16 @@ io.on('connection', function(socket){
     });
 
   } else {
-    console.log("full: " + current);
+    console.log("Full: " + current+". Client not accepted");
     socket.emit("redirect");
+    //is useless go to the 'disconnect' listener when current>=3
+    return;
   }
   socket.on("disconnect",function(){
+    // --current;
+    current = Object.keys(io.sockets.connected).length;
+
      io.emit("refresh");
-     current--;
      console.log("leaving. Current: " + current);
   });
 
