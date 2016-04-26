@@ -3,6 +3,12 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+        concat: {
+            dist: {
+                src: ['public/javascripts/portal.js', 'public/javascripts/main.js'],
+                dest: 'public/javascripts/portal.min.js'
+            },
+        },
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -14,8 +20,10 @@ module.exports = function(grunt) {
             ]
         },
         uglify: {
+          dist: {
             files: {
-              'public/dest/minified.js': ['public/javascripts/*.js']
+              'public/javascripts/portal.min.js': ['public/javascripts/portal.min.js']
+            }
           }
         },
         cssmin: {
@@ -44,8 +52,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.registerTask('default', ['jscs','jshint']);
-    grunt.registerTask('rebuild', ['cssmin']);
+    grunt.registerTask('rebuild', ['cssmin','concat','uglify']);
 
 };

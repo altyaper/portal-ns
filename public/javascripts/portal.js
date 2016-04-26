@@ -193,7 +193,9 @@ $(window).keyup(function(key) {
         }else {
             socket.emit('talk');
         }
-        tracks.forEach(t => t.enabled = !t.enabled);
+        tracks.forEach(function(t){
+          t.enabled = !t.enabled;
+        });
     }
 });
 
