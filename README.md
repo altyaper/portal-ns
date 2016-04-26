@@ -12,3 +12,9 @@ Enter to the portal-ns folder and install npm and bower dependencies
 
 ## Run the server
 `npm start`
+
+
+## Testing
+**Unit tests:**  
+To run the unit tests:  
+ ```npm test```  
