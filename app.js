@@ -61,9 +61,8 @@ io.on('connection', function(socket){
     return;
   }
   socket.on("disconnect",function(){
-    // --current;
     current = Object.keys(io.sockets.connected).length;
-     io.emit("refresh");
+    io.emit("refresh");
   });
 
 });
@@ -78,8 +77,7 @@ app.post("/on", function(req, res){
   res.end();
 });
 
-http.listen(port, function(){
-});
+http.listen(port);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -112,5 +110,4 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.current = current;
 module.exports = app;

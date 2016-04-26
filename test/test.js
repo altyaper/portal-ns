@@ -12,6 +12,15 @@ var options = {
 
 describe('Test connections', function() {
 
+    it('it should emit join when a user is connected', function(done) {
+        var client = io.connect(socketURL, options);
+        client.on('join', function() {
+            client.disconnect();
+            done();
+        });
+    });
+
+
     it('it should just two lients to connect', function(done) {
 
         var client = io.connect(socketURL, options);

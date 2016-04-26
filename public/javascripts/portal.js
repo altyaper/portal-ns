@@ -9,7 +9,12 @@ var socket = io(),
     flag = false,
     tracks,
     video,
-    audio;
+    audio,
+    portalparam = window.location.search.split('=')[1],
+    portal,
+    animation;
+
+
 var portales = {
     'cuu' : {
         'color' : {
@@ -34,25 +39,22 @@ var portales = {
             'b' : 155
         },
         'greeting' : 'hello CDMX'
-      },
-      'default':{
+    },
+    'default': {
         'color' : {
-          'r' : 50,
-          'g' : 50,
-          'b' : 55
+            'r' : 50,
+            'g' : 50,
+            'b' : 55
         }
-      }
-    };
-
-
-    var portalparam = window.location.search.split('=')[1];
-    var portal;
-    if(portalparam){
-      portal = portales[portalparam];
-    }else{
-      portal = portales['default'];
     }
-    var animation;
+};
+
+if(portalparam) {
+    portal = portales[portalparam];
+}else {
+    portal = portales['default'];
+}
+
 
 socket.on('join', function(current) {
 
