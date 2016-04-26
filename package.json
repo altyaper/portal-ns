@@ -3,7 +3,8 @@
   "version": "0.1.2",
   "private": true,
   "scripts": {
-    "start": "grunt rebuild | node app.js"
+    "start": "grunt rebuild | node app.js",
+    "test": "grunt & mocha -R spec"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -26,6 +27,7 @@
     "grunt-jscs": "^2.8.0",
     "mocha": "^2.4.5",
     "should": "^8.3.1",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "supertest": "^1.2.0"
   }
 }

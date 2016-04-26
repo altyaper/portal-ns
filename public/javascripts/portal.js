@@ -10,37 +10,37 @@ var socket = io(),
     tracks,
     video,
     audio;
-    var portales = {
-      'cuu' : {
+var portales = {
+    'cuu' : {
         'color' : {
-          'r' : 255,
-          'g' : 130,
-          'b' : 0
+            'r' : 255,
+            'g' : 130,
+            'b' : 0
         },
         'greeting' : 'hello Chihuahua'
-      },
-      'hmo' : {
+    },
+    'hmo' : {
         'color' : {
-          'r' : 1,
-          'g' : 80,
-          'b' : 255
+            'r' : 1,
+            'g' : 80,
+            'b' : 255
         },
         'greeting' : 'hello HMO'
-      },
-      'cdmx' : {
+    },
+    'cdmx' : {
         'color' : {
-          'r' : 3,
-          'g' : 40,
-          'b' : 155
+            'r' : 3,
+            'g' : 40,
+            'b' : 155
         },
         'greeting' : 'hello CDMX'
-      }
-    };
+    }
+};
 
 
-    var portalparam = window.location.search.split('=')[1];
-    var portal = portales[portalparam];
-    var animation;
+var portalparam = window.location.search.split('=')[1];
+var portal = portales[portalparam];
+var animation;
 
 socket.on('join', function(current) {
 
@@ -140,31 +140,30 @@ function start(isCaller) {
 
     // get the local stream, show it in the local video element and send it
     navigator.getUserMedia({ 'audio': true, 'video': {
-      'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
-      'mandatory': {}
+        'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
+        'mandatory': {}
     },
-    "iceServers": [{"url": "stun:stun.l.google.com:19302"}]}, function (stream) {
+    'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]}, function (stream) {
 
-            localVideo.src = window.URL.createObjectURL(stream);
-            pc.addStream(stream);
-            //
-            window.stream = stream;
+        localVideo.src = window.URL.createObjectURL(stream);
+        pc.addStream(stream);
+        //
+        window.stream = stream;
 
-            if (isCaller) {
-                pc.createOffer(gotDescription, logFail);
-            }else {
-                pc.createAnswer(gotDescription, logFail);
-            }
+        if (isCaller) {
+            pc.createOffer(gotDescription, logFail);
+        }else {
+            pc.createAnswer(gotDescription, logFail);
+        }
 
-            function gotDescription(desc) {
+        function gotDescription(desc) {
             pc.setLocalDescription(desc);
             socket.emit('message', {type: 'description', data: desc});
         }
 
-        }, logFail);
+    }, logFail);
 }
 
-// TODO: Integrate the gun intead of this
 $(window).keyup(function(key) {
 
     //When "R" key
@@ -176,48 +175,41 @@ $(window).keyup(function(key) {
         audio = tracks[1];
 
         if (video.enabled && audio.enabled) {
-
             socket.emit('quiet');
-
         }else {
-
             socket.emit('talk');
-
         }
-
         tracks.forEach(t => t.enabled = !t.enabled);
-
     }
-
 });
 
 function logFail (error) {
-        console.log(error);
+    console.log(error);
 }
 
 function comunication(enable) {
     canvas.style.display = (enable)? 'none' : 'inline';
     if (enable) {
-      stopAnimate();
-    }else{
-      animate();
+        stopAnimate();
+    }else {
+        animate();
     }
     remoteVideo.style.display = (enable)? 'inline' : 'none';
     localVideo.style.display = (enable)? 'inline' : 'none';
 }
 
-function stopAnimate(){
-  if (animation != undefined) {
-      clearInterval(animation);
-      animation = undefined;
-  }
+function stopAnimate() {
+    if (animation !== undefined) {
+        clearInterval(animation);
+        animation = undefined;
+    }
 }
 
-function animate(){
-  animation = setInterval(function() {
-    init();
-  }, 0);
-  return animation;
+function animate() {
+    animation = setInterval(function() {
+        init();
+    }, 0);
+    return animation;
 }
 
 function init() {

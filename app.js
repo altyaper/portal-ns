@@ -43,8 +43,6 @@ io.on('connection', function(socket){
 
     io.emit("join",current);
 
-    console.log(current + " clients");
-
     socket.on("message", function(desc){
       io.emit("message", desc);
     });
@@ -58,7 +56,6 @@ io.on('connection', function(socket){
     });
 
   } else {
-    console.log("Full: " + current+". Client not accepted");
     socket.emit("redirect",current);
     //is useless go to the 'disconnect' listener when current>=3
     return;
@@ -66,27 +63,22 @@ io.on('connection', function(socket){
   socket.on("disconnect",function(){
     // --current;
     current = Object.keys(io.sockets.connected).length;
-
      io.emit("refresh");
-     console.log("leaving. Current: " + current);
   });
 
 });
 
 app.post("/off", function(req, res){
   io.emit("quiet");
-  console.log("Off");
   res.end();
 });
 
 app.post("/on", function(req, res){
   io.emit("talk");
-  console.log("On");
   res.end();
 });
 
 http.listen(port, function(){
-  console.log('listening on *:'+port);
 });
 
 // catch 404 and forward to error handler

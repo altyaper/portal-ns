@@ -9,7 +9,8 @@ module.exports = function(grunt) {
             },
             files: [
               'Gruntfile.js',
-              'public/javascripts/*.js'
+              'public/javascripts/*.js',
+              'test/*.js'
             ]
         },
         uglify: {
@@ -41,6 +42,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('default', ['jscs','jshint']);

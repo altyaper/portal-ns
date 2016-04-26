@@ -15,7 +15,8 @@
         "window",
         "RTCPeerConnection",
         "RTCIceCandidate",
-        "RTCSessionDescription"
+        "RTCSessionDescription",
+        "should"
     ],
 
     "node": true,
