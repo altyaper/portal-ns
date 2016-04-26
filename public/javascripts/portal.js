@@ -34,12 +34,24 @@ var socket = io(),
           'b' : 155
         },
         'greeting' : 'hello CDMX'
+      },
+      'default':{
+        'color' : {
+          'r' : 50,
+          'g' : 50,
+          'b' : 55
+        }
       }
     };
 
 
     var portalparam = window.location.search.split('=')[1];
-    var portal = portales[portalparam];
+    var portal;
+    if(portalparam){
+      portal = portales[portalparam];
+    }else{
+      portal = portales['default'];
+    }
     var animation;
 
 socket.on('join', function(current) {
