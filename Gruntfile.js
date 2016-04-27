@@ -15,16 +15,17 @@ module.exports = function(grunt) {
             },
             files: [
               'Gruntfile.js',
-              'public/javascripts/*.js',
+              'public/javascripts/main.js',
+              'public/javascripts/portal.js',
               'test/*.js'
             ]
         },
         uglify: {
-          dist: {
-            files: {
-              'public/javascripts/portal.min.js': ['public/javascripts/portal.min.js']
+            dist: {
+                files: {
+                    'public/javascripts/portal.min.js': ['public/javascripts/portal.min.js']
+                }
             }
-          }
         },
         cssmin: {
             target: {
@@ -40,6 +41,14 @@ module.exports = function(grunt) {
             },
             files: ['<%= jshint.files %>']
         },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec',
+                },
+                src: ['test/*.js']
+            }
+        },
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jscs','jshint','uglify','cssmin']
@@ -53,8 +62,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.registerTask('default', ['jscs','jshint']);
     grunt.registerTask('rebuild', ['cssmin','concat','uglify']);
+    grunt.registerTask('travis', ['default','mochaTest']);
 
 };
