@@ -56,6 +56,7 @@ io.on('connection', function(socket){
     });
 
     socket.on("refresh", function(){
+      current = 0;
       io.emit("refresh");
     });
 
