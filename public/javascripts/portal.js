@@ -58,7 +58,7 @@ if(portalparam) {
 
 socket.on('join', function(current) {
 
-    if(current == 1) {
+    if(current === 1) {
         flag = true;
         comunication(false);
     }
