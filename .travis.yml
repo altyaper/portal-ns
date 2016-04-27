@@ -1,0 +1,16 @@
+sudo: false
+
+install:
+  - nvm install 5.11.0
+  - npm install -g npm
+  - npm install -g bower
+  - npm install -g grunt-cli
+  - bower install
+  - npm install
+
+os:
+  - osx
+  - linux
+
+script:
+  - grunt travis

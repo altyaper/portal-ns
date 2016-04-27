@@ -8,10 +8,11 @@ var port = process.env.PORT || 5000;
 var routes = require('./routes/index');
 var app = express();
 var fs = require('fs');
-var keys = {
-  key: fs.readFileSync('ssl/key.pem'),
-  cert: fs.readFileSync('ssl/cert.pem')
-};
+// This is useful just in development env.
+// var keys = {
+//   key: fs.readFileSync('ssl/key.pem'),
+//   cert: fs.readFileSync('ssl/cert.pem')
+// };
 var http = require('http').Server(app);;
 var io = require('socket.io')(http);
 
@@ -42,8 +43,6 @@ io.on('connection', function(socket){
 
     io.emit("join",current);
 
-    console.log(current + " clients");
-
     socket.on("message", function(desc){
       io.emit("message", desc);
     });
@@ -57,32 +56,28 @@ io.on('connection', function(socket){
     });
 
   } else {
-    console.log("full: " + current);
-    socket.emit("redirect");
+    socket.emit("redirect",current);
+    //is useless go to the 'disconnect' listener when current>=3
+    return;
   }
   socket.on("disconnect",function(){
-     io.emit("refresh");
-     current--;
-     console.log("leaving. Current: " + current);
+    current = Object.keys(io.sockets.connected).length;
+    io.emit("refresh");
   });
 
 });
 
 app.post("/off", function(req, res){
   io.emit("quiet");
-  console.log("Off");
   res.end();
 });
 
 app.post("/on", function(req, res){
   io.emit("talk");
-  console.log("On");
   res.end();
 });
 
-http.listen(port, function(){
-  console.log('listening on *:'+port);
-});
+http.listen(port);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -114,6 +109,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
