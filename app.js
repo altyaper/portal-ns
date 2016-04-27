@@ -55,6 +55,10 @@ io.on('connection', function(socket){
       io.emit("quiet", desc);
     });
 
+    socket.on("refresh", function(){
+      io.emit("refresh");
+    });
+
   } else {
     socket.emit("redirect",current);
     //is useless go to the 'disconnect' listener when current>=3

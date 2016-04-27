@@ -71,9 +71,15 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
-    video.enabled = true;
-    audio.enabled = true;
-    comunication(true);
+    socket.emit('refresh');
+    // tracks = window.stream.getTracks();
+    // video = tracks[0];
+    // audio = tracks[1];
+    //
+    // video.enabled = true;
+    // audio.enabled = true;
+    //
+    // comunication(true);
 
 });
 
@@ -85,6 +91,7 @@ socket.on('quiet', function(evt) {
 
     video.enabled = false;
     audio.enabled = false;
+
     comunication(false);
 
 });
@@ -179,25 +186,28 @@ function start(isCaller) {
 }
 
 $(window).keyup(function(key) {
-
     //When "R" key
     if(key.keyCode === 82) {
-
-        //This part stop all the LOCAL tracks (Audio and Video)
-        tracks = window.stream.getTracks();
-        video = tracks[0];
-        audio = tracks[1];
-
-        if (video.enabled && audio.enabled) {
-            socket.emit('quiet');
-        }else {
-            socket.emit('talk');
-        }
-        tracks.forEach(function(t) {
-            t.enabled = !t.enabled;
-        });
+        switcher();
     }
 });
+
+function switcher() {
+    //This part stop all the LOCAL tracks (Audio and Video)
+    tracks = window.stream.getTracks();
+    video = tracks[0];
+    audio = tracks[1];
+
+    if (video.enabled && audio.enabled) {
+        socket.emit('quiet');
+    }else {
+        socket.emit('talk');
+    }
+    tracks.forEach(function(t) {
+      t.enabled = !t.enabled;
+  });
+
+}
 
 function logFail (error) {
     console.log(error);
