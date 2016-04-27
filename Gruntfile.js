@@ -15,6 +15,7 @@ module.exports = function(grunt) {
             },
             files: [
               'Gruntfile.js',
+              'app.js',
               'public/javascripts/main.js',
               'public/javascripts/portal.js',
               'test/*.js'
