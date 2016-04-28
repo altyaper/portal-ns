@@ -105,15 +105,6 @@ socket.on('message', function(evt) {
     if (evt.type === 'description') {
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
 
-    }else if(evt.type === 'toggle stream') {
-        var value = evt.data;
-
-        if(value === 0) {
-
-        }else if(value === 1) {
-
-        }
-
     }else if (evt.type === 'candidate') {
 
         if(evt.data) {
@@ -125,7 +116,7 @@ socket.on('message', function(evt) {
 });
 
 socket.on('redirect', function() {
-    window.location = 'http://www.uptime.ly/wp-content/uploads/2014/12/tumblr_ms0p7wR1i51r0ufaco3_500.jpg';
+    window.location.href = "/full";
 });
 
 socket.on('refresh', function() {
