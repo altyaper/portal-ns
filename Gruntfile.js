@@ -67,6 +67,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['jscs','jshint']);
     grunt.registerTask('rebuild', ['cssmin','concat','uglify']);
-    grunt.registerTask('travis', ['default','mochaTest']);
+    grunt.registerTask('travis', ['default','rebuild','mochaTest']);
 
 };
