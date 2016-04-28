@@ -116,7 +116,7 @@ socket.on('message', function(evt) {
 });
 
 socket.on('redirect', function() {
-    window.location.href = "/full";
+    window.location.href = '/full';
 });
 
 socket.on('refresh', function() {
