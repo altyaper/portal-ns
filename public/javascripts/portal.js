@@ -1,9 +1,5 @@
 'use strict';
 
-var p = new PortalAnimation(true);
-
-p.init();
-
 var io;
 var socket = io.connect(),
     pc,
@@ -60,6 +56,12 @@ var portales = {
     }
 };
 
+if(portalparam) {
+    portal = portales[portalparam];
+}else {
+    portal = portales['default'];
+}
+
 socket.on('join', function(current) {
 
     if(current === 1) {
@@ -68,10 +70,8 @@ socket.on('join', function(current) {
     }
     if(flag === false) {
         comunication(true);
-        portal = portales["cuu"];
         start(true);
-    }else{
-      portal = portales["hmo"];
+    }else {
     }
 
 });

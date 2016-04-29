@@ -43,6 +43,7 @@ io.on('connection', function(socket) {
     socket.on('room', function(room) {
 
         socket.join(room);
+
         current = io.nsps['/'].adapter.rooms[room].length;
 
         if (current < 3) {
@@ -82,7 +83,6 @@ io.on('connection', function(socket) {
 
 app.get('/r/:room', function(req, res) {
     var room = req.param('room');
-
     res.render('portal', {title: 'Test', room: room});
 });
 
