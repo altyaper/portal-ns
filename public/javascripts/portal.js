@@ -12,7 +12,9 @@ var socket = io(),
     audio,
     portalparam = window.location.search.split('=')[1],
     portal,
-    animation;
+    animation,
+    audioOn = document.getElementById('portalOn'),
+    audioOff = document.getElementById('lportalOff');
 
 
 var portales = {
@@ -76,6 +78,7 @@ socket.on('talk', function(evt) {
     // video = tracks[0];
     // audio = tracks[1];
     //
+    portalOn.play();
     video.enabled = true;
     audio.enabled = true;
     
@@ -89,6 +92,7 @@ socket.on('quiet', function(evt) {
     video = tracks[0];
     audio = tracks[1];
 
+    portalOff.play();
     video.enabled = false;
     audio.enabled = false;
 
