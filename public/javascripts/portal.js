@@ -71,15 +71,15 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
-    socket.emit('refresh');
+    // socket.emit('refresh');
     // tracks = window.stream.getTracks();
     // video = tracks[0];
     // audio = tracks[1];
     //
-    // video.enabled = true;
-    // audio.enabled = true;
-    //
-    // comunication(true);
+    video.enabled = true;
+    audio.enabled = true;
+    
+    comunication(true);
 
 });
 
