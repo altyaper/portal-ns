@@ -1,5 +1,5 @@
 'use strict';
-
+var io;
 var socket = io.connect(),
     pc,
     configuration = null,
@@ -15,10 +15,10 @@ var socket = io.connect(),
     animation,
     audioOn = document.getElementById('portalOn'),
     audioOff = document.getElementById('portalOff'),
-    room = "portal";
+    room = 'portal';
 
-socket.on("connect", function(){
-  socket.emit("room", room);
+socket.on('connect', function() {
+    socket.emit('room', room);
 });
 
 var portales = {
@@ -77,21 +77,15 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
-    // socket.emit('refresh');
-    // tracks = window.stream.getTracks();
-    // video = tracks[0];
-    // audio = tracks[1];
-    //
     audioOn.play();
     video.enabled = true;
     audio.enabled = true;
-
     comunication(true);
 
 });
 
 socket.on('quiet', function(evt) {
-    
+
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];

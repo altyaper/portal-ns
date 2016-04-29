@@ -1,3 +1,4 @@
+'use strict';
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,8 +11,7 @@ var room = process.env.room || 'portal';
 
 var routes = require('./routes/index');
 var app = express();
-
-var remote = require("./remote/control.js");
+var remote = require('./remote/control.js');
 // var fs = require('fs');
 // This is useful just in development env.
 // var keys = {
@@ -43,7 +43,7 @@ io.on('connection', function(socket) {
     socket.on('room', function(room) {
 
         socket.join(room);
-        current = io.nsps["/"].adapter.rooms[room].length;
+        current = io.nsps['/'].adapter.rooms[room].length;
 
         if (current < 3) {
 
@@ -81,17 +81,17 @@ io.on('connection', function(socket) {
 });
 
 app.post('/off', function(req, res) {
-    var message = remote.getActionMessage(req.body.token, "/off", "quiet");
-    if(message.status === 200){
-      io.sockets.in(room).emit("quiet");
+    var message = remote.getActionMessage(req.body.token, '/off');
+    if(message.status === 200) {
+        io.sockets.in(room).emit('quiet');
     }
     res.json(message);
 });
 
 app.post('/on', function(req, res) {
-    var message = remote.getActionMessage(req.body.token, "/on", "talk");
-    if(message.status === 200){
-      io.sockets.in(room).emit("talk");
+    var message = remote.getActionMessage(req.body.token, '/on');
+    if(message.status === 200) {
+        io.sockets.in(room).emit('talk');
     }
     res.json(message);
 });

@@ -1,3 +1,5 @@
+'use strict';
+
 require('should');
 var app = require('../app');
 var token = '1B724F94C3EDC1DA6FD7294D1C611';
@@ -12,73 +14,79 @@ var room = 'portal';
 
 function joinRoom(client) {
     client.on('connect', function() {
-      client.emit('room', room);
+        client.emit('room', room);
     });
 }
 
-describe("Resquest to the routes", function(){
+describe('Resquest to the routes', function() {
 
-  it('it should return a 200 status when /GET in the root path', function(done) {
-      request(app)
-        .get('/')
-        .expect(200, done);
-  });
+    it('it should return a 200 status when /GET in the root path', function(done) {
 
-  it('it should respond 200 when /POST to /off path', function(done){
-    request(app)
-      .post('/off')
-      .expect(200, done);
-  });
+        request(app)
+          .get('/')
+          .expect(200, done);
 
-  it('it should respond 200 when /POST to /off path', function(done){
-    request(app)
-      .post('/on')
-      .expect(200, done);
-  });
+    });
 
-  it('it should return a 200 status when /GET in full path', function(done) {
+    it('it should respond 200 when /POST to /off path', function(done) {
 
-      request(app)
-        .get('/full')
-        .expect(200,done);
+        request(app)
+          .post('/off')
+          .expect(200, done);
 
-  });
+    });
+
+    it('it should respond 200 when /POST to /off path', function(done) {
+
+        request(app)
+          .post('/on')
+          .expect(200, done);
+
+    });
+
+    it('it should return a 200 status when /GET in full path', function(done) {
+
+        request(app)
+          .get('/full')
+          .expect(200, done);
+
+    });
 
 });
 
 describe('Test emit events from the client-server', function () {
 
-  it('it should emit join when a user is connected', function(done) {
+    it('it should emit join when a user is connected', function(done) {
 
-      var client = io.connect(socketURL, options);
+        var client = io.connect(socketURL, options);
 
-      joinRoom(client);
+        joinRoom(client);
 
-      client.on('join', function(current) {
-          current.should.equal(1);
-          client.disconnect();
-          done();
-      });
-
+        client.on('join', function(current) {
+      current.should.equal(1);
+      client.disconnect();
+      done();
   });
 
-  it('it should retrun the same message when client emit ´message´', function(done) {
+    });
 
-      var client = io.connect(socketURL, options);
+    it('it should retrun the same message when client emit ´message´', function(done) {
 
-      joinRoom(client);
+        var client = io.connect(socketURL, options);
 
-      client.emit('message', {type: 'hello',data: 5});
+        joinRoom(client);
 
-      client.on('message', function(data) {
+        client.emit('message', {type: 'hello',data: 5});
 
-          data.type.should.equal('hello');
-          data.data.should.equal(5);
-          client.disconnect();
-          done();
-      });
+        client.on('message', function(data) {
 
-  });
+            data.type.should.equal('hello');
+            data.data.should.equal(5);
+            client.disconnect();
+            done();
+        });
+
+    });
 
 });
 
@@ -142,17 +150,17 @@ describe('Test connections', function() {
         var client = io.connect(socketURL, options);
 
         client.on('connect', function() {
-          client.emit('room', room);
-          request(app)
-            .post('/off')
-            .send({ token: token})
-            .expect(200)
-            .end();
+            client.emit('room', room);
+            request(app)
+              .post('/off')
+              .send({ token: token})
+              .expect(200)
+              .end();
         });
 
         client.on('quiet', function() {
-          client.disconnect();
-          done();
+            client.disconnect();
+            done();
         });
 
 
@@ -162,12 +170,12 @@ describe('Test connections', function() {
         var client = io.connect(socketURL, options);
 
         client.on('connect', function() {
-          client.emit('room', room);
-          request(app)
-            .post('/on')
-            .send({ token: token})
-            .expect(200)
-            .end();
+            client.emit('room', room);
+            request(app)
+              .post('/on')
+              .send({ token: token})
+              .expect(200)
+              .end();
         });
 
         client.on('talk', function() {
@@ -181,18 +189,18 @@ describe('Test connections', function() {
 
         var client = io.connect(socketURL, options);
 
-        client.on("connect",function(){
+        client.on('connect', function() {
 
-          client.emit("room", room);
+            client.emit('room', room);
 
-          var client2 = io.connect(socketURL, options);
+            var client2 = io.connect(socketURL, options);
 
-          client2.on("connect", function(){
-            client2.emit("room", room);
-            client.emit("refresh");
-          });
+            client2.on('connect', function() {
+                client2.emit('room', room);
+                client.emit('refresh');
+            });
 
-          client2.on('refresh', function() {
+            client2.on('refresh', function() {
               client2.disconnect();
               client.disconnect();
               done();
@@ -202,15 +210,15 @@ describe('Test connections', function() {
 
     });
 
-    it("it should emit off just when a valid token is given", function(done){
+    it('it should emit off just when a valid token is given', function(done) {
 
-      request(app)
-        .post("/off")
-        .send({ token: token})
-        .end(function(err, res){
-          if(res.body.status === 200){
-            done();
-          }
+        request(app)
+          .post('/off')
+          .send({ token: token})
+        .end(function(err, res) {
+            if(res.body.status === 200) {
+                done();
+            }
         });
 
     });

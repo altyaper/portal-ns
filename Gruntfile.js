@@ -18,7 +18,9 @@ module.exports = function(grunt) {
               'app.js',
               'public/javascripts/main.js',
               'public/javascripts/portal.js',
-              'test/*.js'
+              'remote/*.js',
+              'test/*.js',
+              'routes/*.js'
             ]
         },
         uglify: {
