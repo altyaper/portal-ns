@@ -15,7 +15,7 @@ var socket = io.connect(),
     animation,
     audioOn = document.getElementById('portalOn'),
     audioOff = document.getElementById('portalOff'),
-    room = 'portal';
+    room = $("#roomid").data("room");
 
 socket.on('connect', function() {
     socket.emit('room', room);
