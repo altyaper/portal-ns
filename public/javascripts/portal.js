@@ -71,7 +71,6 @@ socket.on('join', function(current) {
     if(flag === false) {
         comunication(true);
         start(true);
-    }else {
     }
 
 });
