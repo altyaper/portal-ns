@@ -5,11 +5,9 @@ html
     link(rel="icon" href="/images/favicon.ico")
     link(rel='stylesheet', href='/stylesheets/styles.min.css')
     link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.css')
-    script(src="/vendor/jquery/dist/jquery.min.js")
+    script(src="/vendor/jquery/dist/jquery.js")
     script(src='/vendor/webrtc-adapter.js/adapter.js') 
-    script(src='/socket.io/socket.io.js')    
+    script(src='/socket.io/socket.io.js')
+    script(src="javascripts/main.js")   
   body
-    block content
-    div(class='options-screen')
-      a(href='#' id="fullscreen" class="animated")
-        i(class="fa fa-arrows-alt")
+    block content    

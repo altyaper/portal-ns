@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   res.render('portal', { title: 'Portal NS :)' });
 });
 
+router.get('/full', function(req, res, next){
+  res.render('full');
+});
+
 module.exports = router;

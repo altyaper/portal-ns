@@ -113,8 +113,15 @@ describe('Test connections', function() {
 
     });
 
-
-
-
+    it('it should emit a refresh when a client send a refresh message', function(done) {
+        var client = io.connect(socketURL, options);
+        var client2 = io.connect(socketURL, options);
+        client.emit('refresh');
+        client2.on('refresh', function() {
+            client.disconnect();
+            client2.disconnect();
+            done();
+        });
+    });
 
 });

@@ -78,3 +78,25 @@ video {
 .options-screen a:hover {
   transform: scale(2, 2);
 }
+.full-video {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 25px;
+  height: 0;
+}
+.full-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.retry {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #fff;
+  font-size: 20px;
+  z-index: 1000;
+  text-decoration: none;
+}

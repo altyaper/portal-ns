@@ -12,7 +12,9 @@ var socket = io(),
     audio,
     portalparam = window.location.search.split('=')[1],
     portal,
-    animation;
+    animation,
+    audioOn = document.getElementById('portalOn'),
+    audioOff = document.getElementById('lportalOff');
 
 
 var portales = {
@@ -71,8 +73,15 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
+    // socket.emit('refresh');
+    // tracks = window.stream.getTracks();
+    // video = tracks[0];
+    // audio = tracks[1];
+    //
+    audioOn.play();
     video.enabled = true;
     audio.enabled = true;
+
     comunication(true);
 
 });
@@ -83,8 +92,10 @@ socket.on('quiet', function(evt) {
     video = tracks[0];
     audio = tracks[1];
 
+    audioOff.play();
     video.enabled = false;
     audio.enabled = false;
+
     comunication(false);
 
 });
@@ -98,15 +109,6 @@ socket.on('message', function(evt) {
     if (evt.type === 'description') {
         pc.setRemoteDescription(new RTCSessionDescription(evt.data));
 
-    }else if(evt.type === 'toggle stream') {
-        var value = evt.data;
-
-        if(value === 0) {
-
-        }else if(value === 1) {
-
-        }
-
     }else if (evt.type === 'candidate') {
 
         if(evt.data) {
@@ -118,7 +120,7 @@ socket.on('message', function(evt) {
 });
 
 socket.on('redirect', function() {
-    window.location = 'http://www.uptime.ly/wp-content/uploads/2014/12/tumblr_ms0p7wR1i51r0ufaco3_500.jpg';
+    window.location.href = '/full';
 });
 
 socket.on('refresh', function() {
@@ -179,25 +181,28 @@ function start(isCaller) {
 }
 
 $(window).keyup(function(key) {
-
     //When "R" key
     if(key.keyCode === 82) {
-
-        //This part stop all the LOCAL tracks (Audio and Video)
-        tracks = window.stream.getTracks();
-        video = tracks[0];
-        audio = tracks[1];
-
-        if (video.enabled && audio.enabled) {
-            socket.emit('quiet');
-        }else {
-            socket.emit('talk');
-        }
-        tracks.forEach(function(t) {
-            t.enabled = !t.enabled;
-        });
+        switcher();
     }
 });
+
+function switcher() {
+    //This part stop all the LOCAL tracks (Audio and Video)
+    tracks = window.stream.getTracks();
+    video = tracks[0];
+    audio = tracks[1];
+
+    if (video.enabled && audio.enabled) {
+        socket.emit('quiet');
+    }else {
+        socket.emit('talk');
+    }
+    tracks.forEach(function(t) {
+      t.enabled = !t.enabled;
+  });
+
+}
 
 function logFail (error) {
     console.log(error);
