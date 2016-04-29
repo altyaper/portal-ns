@@ -78,10 +78,10 @@ socket.on('talk', function(evt) {
     // video = tracks[0];
     // audio = tracks[1];
     //
-    portalOn.play();
+    audioOn.play();
     video.enabled = true;
     audio.enabled = true;
-    
+
     comunication(true);
 
 });
@@ -92,7 +92,7 @@ socket.on('quiet', function(evt) {
     video = tracks[0];
     audio = tracks[1];
 
-    portalOff.play();
+    audioOff.play();
     video.enabled = false;
     audio.enabled = false;
 
