@@ -1,6 +1,6 @@
 'use strict';
 
-var socket = io(),
+var socket = io.connect(),
     pc,
     configuration = null,
     localVideo = document.getElementById('localvideo'),
@@ -14,8 +14,12 @@ var socket = io(),
     portal,
     animation,
     audioOn = document.getElementById('portalOn'),
-    audioOff = document.getElementById('lportalOff');
+    audioOff = document.getElementById('portalOff'),
+    room = "portal";
 
+socket.on("connect", function(){
+  socket.emit("room", room);
+});
 
 var portales = {
     'cuu' : {
@@ -87,7 +91,7 @@ socket.on('talk', function(evt) {
 });
 
 socket.on('quiet', function(evt) {
-
+    
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];

@@ -4,10 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
 var port = process.env.PORT || 5000;
+var room = process.env.room || 'portal';
+
 var routes = require('./routes/index');
 var app = express();
-var room = 'portal';
+
+var remote = require("./remote/control.js");
 // var fs = require('fs');
 // This is useful just in development env.
 // var keys = {
@@ -34,14 +38,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 
-
 io.on('connection', function(socket) {
 
     socket.on('room', function(room) {
 
         socket.join(room);
-
-        current = Object.keys(io.sockets.in(room).sockets).length;
+        current = io.nsps["/"].adapter.rooms[room].length;
 
         if (current < 3) {
 
@@ -60,7 +62,6 @@ io.on('connection', function(socket) {
             });
 
             socket.on('refresh', function() {
-                // current = 0;
                 io.sockets.in(room).emit('refresh');
             });
 
@@ -77,17 +78,22 @@ io.on('connection', function(socket) {
         socket.leave(socket.room);
     });
 
-
 });
 
 app.post('/off', function(req, res) {
-    io.sockets.in(room).emit('quiet');
-    res.end();
+    var message = remote.getActionMessage(req.body.token, "/off", "quiet");
+    if(message.status === 200){
+      io.sockets.in(room).emit("quiet");
+    }
+    res.json(message);
 });
 
 app.post('/on', function(req, res) {
-    io.sockets.in(room).emit('talk');
-    res.end();
+    var message = remote.getActionMessage(req.body.token, "/on", "talk");
+    if(message.status === 200){
+      io.sockets.in(room).emit("talk");
+    }
+    res.json(message);
 });
 
 http.listen(port);
