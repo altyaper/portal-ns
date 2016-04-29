@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 var routes = require('./routes/index');
 var app = express();
+var room = 'portal';
 // var fs = require('fs');
 // This is useful just in development env.
 // var keys = {
@@ -33,52 +34,59 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 
+
 io.on('connection', function(socket) {
 
-    current = Object.keys(io.sockets.connected).length;
+    socket.on('room', function(room) {
 
-    if (current < 3) {
+        socket.join(room);
 
-        socket.join('portal');
+        current = Object.keys(io.sockets.in(room).sockets).length;
 
-        io.emit('join', current);
+        if (current < 3) {
 
-        socket.on('message', function(desc) {
-            io.emit('message', desc);
-        });
+            io.sockets.in(room).emit('join', current);
 
-        socket.on('talk', function(desc) {
-            io.emit('talk', desc);
-        });
+            socket.on('message', function(desc) {
+                io.sockets.in(room).emit('message', desc);
+            });
 
-        socket.on('quiet', function(desc) {
-            io.emit('quiet', desc);
-        });
+            socket.on('talk', function(desc) {
+                io.sockets.in(room).emit('talk', desc);
+            });
 
-        socket.on('refresh', function() {
-            current = 0;
-            io.emit('refresh');
-        });
+            socket.on('quiet', function(desc) {
+                io.sockets.in(room).emit('quiet', desc);
+            });
 
-    } else {
-        socket.emit('redirect', current);
-        //is useless go to the 'disconnect' listener when current>=3
-        return;
-    }
-    socket.on('disconnect', function() {
-        current = Object.keys(io.sockets.connected).length;
-        io.emit('refresh');
+            socket.on('refresh', function() {
+                // current = 0;
+                io.sockets.in(room).emit('refresh');
+            });
+
+        } else {
+            socket.emit('redirect', current);
+            //is useless go to the 'disconnect' listener when current>=3
+            return;
+        }
+
     });
+
+    socket.on('disconnect', function() {
+        io.sockets.in(room).emit('refresh');
+        socket.leave(socket.room);
+    });
+
 
 });
 
 app.post('/off', function(req, res) {
-    io.emit('quiet');
+    io.sockets.in(room).emit('quiet');
     res.end();
 });
 
 app.post('/on', function(req, res) {
-    io.emit('talk');
+    io.sockets.in(room).emit('talk');
     res.end();
 });
 

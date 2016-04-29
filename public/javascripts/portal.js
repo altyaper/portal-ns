@@ -12,8 +12,12 @@ var socket = io(),
     audio,
     portalparam = window.location.search.split('=')[1],
     portal,
-    animation;
+    animation,
+    room = 'portal';
 
+socket.on('connect', function() {
+    socket.emit('room', room);
+});
 
 var portales = {
     'cuu' : {
@@ -71,20 +75,20 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
-    socket.emit('refresh');
-    // tracks = window.stream.getTracks();
-    // video = tracks[0];
-    // audio = tracks[1];
-    //
-    // video.enabled = true;
-    // audio.enabled = true;
-    //
-    // comunication(true);
+    // socket.emit('refresh');
+    tracks = window.stream.getTracks();
+    video = tracks[0];
+    audio = tracks[1];
+
+    video.enabled = true;
+    audio.enabled = true;
+
+    comunication(true);
 
 });
 
-socket.on('quiet', function(evt) {
-
+socket.on('quiet', function() {
+    
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];
