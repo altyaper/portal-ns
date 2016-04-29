@@ -80,10 +80,10 @@ io.on('connection', function(socket) {
 
 });
 
-app.get('/r/:room', function(req, res){
-  var room = req.param('room');
+app.get('/r/:room', function(req, res) {
+    var room = req.param('room');
 
-  res.render("portal", {title: "Test", room: room});  
+    res.render('portal', {title: 'Test', room: room});
 });
 
 app.post('/off', function(req, res) {

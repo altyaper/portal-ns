@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('portal', { title: 'Portal NS :)', room: "portal" });
+    res.render('portal', { title: 'Portal NS :)', room: 'portal' });
 });
 
 router.get('/full', function(req, res, next) {

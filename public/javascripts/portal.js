@@ -1,4 +1,9 @@
 'use strict';
+
+var p = new PortalAnimation(true);
+
+p.init();
+
 var io;
 var socket = io.connect(),
     pc,
@@ -15,7 +20,7 @@ var socket = io.connect(),
     animation,
     audioOn = document.getElementById('portalOn'),
     audioOff = document.getElementById('portalOff'),
-    room = $("#roomid").data("room");
+    room = $('#roomid').data('room');
 
 socket.on('connect', function() {
     socket.emit('room', room);
@@ -55,13 +60,6 @@ var portales = {
     }
 };
 
-if(portalparam) {
-    portal = portales[portalparam];
-}else {
-    portal = portales['default'];
-}
-
-
 socket.on('join', function(current) {
 
     if(current === 1) {
@@ -70,7 +68,10 @@ socket.on('join', function(current) {
     }
     if(flag === false) {
         comunication(true);
+        portal = portales["cuu"];
         start(true);
+    }else{
+      portal = portales["hmo"];
     }
 
 });
@@ -153,11 +154,7 @@ function start(isCaller) {
     };
 
     // get the local stream, show it in the local video element and send it
-    navigator.getUserMedia({ 'audio': true, 'video': {
-        'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
-        'mandatory': {}
-    },
-    'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]}, function (stream) {
+    navigator.getUserMedia({ 'audio': true, 'video': true}, function (stream) {
 
         localVideo.src = window.URL.createObjectURL(stream);
         pc.addStream(stream);
@@ -187,6 +184,8 @@ $(window).keyup(function(key) {
 
 function switcher() {
     //This part stop all the LOCAL tracks (Audio and Video)
+    if(!window.stream) return;
+
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];
@@ -235,12 +234,11 @@ function init() {
 
     var palette;
     var paletteoffset = 0;
-    var cv = document.getElementById('canvas');
-    var ctx = cv.getContext('2d');
+    var ctx = canvas.getContext('2d');
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
-    var height = cv.height;
-    var width = cv.width;
+    var height = canvas.height;
+    var width = canvas.width;
     // plasma source width and height
     var pwidth = 200, pheight = pwidth * (height /width);
     // scale the plasma source to the canvas width/height
@@ -258,7 +256,7 @@ function init() {
         }
     }
 
-    var dist = function dist (a, b, c, d) {
+    var dist = function (a, b, c, d) {
         return Math.sqrt((a - c) * (a - c) + (b - d) * (b - d));
     };
 
@@ -281,6 +279,4 @@ function init() {
         }
     }
 
-    // palette cycle speed
-    paletteoffset++;
 }
