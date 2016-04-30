@@ -15,7 +15,8 @@
         "RTCPeerConnection",
         "RTCIceCandidate",
         "RTCSessionDescription",
-        "should"
+        "should",
+        "PortalAnimation"
     ],
 
     "node": true,

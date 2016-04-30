@@ -1,7 +1,8 @@
 var wpi = require("wiring-pi"),
     http = require("http"),
     port = process.env.PORT || 5000,
-    host = "portal-ns.herokuapp.com",
+    // host = "portal-ns.herokuapp.com",
+    host = "dev-portal-ns.herokuapp.com",
     method = "POST";
 
 var IRin = 40;
@@ -12,6 +13,7 @@ var B = 12;
 var j = 0;
 var ledOn = true;
 var ascend = true;
+var myToken = '1B724F94C3EDC1DA6FD7294D1C611';
 wpi.setup("phys");
 wpi.pinMode(IRin, wpi.INPUT);
 wpi.pinMode(B, wpi.OUTPUT);
@@ -27,16 +29,22 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
     http.request({
       method:method,
       host:host,
+      token:myToken,
       path: "/on"
-    }).end();
+    }).end(function(res){
+      console.log(res);
+    });
 
   }else{
 
     http.request({
       method:method,
       host:host,
+      token:myToken,
       path: "/off"
-    }).end();
+    }).end(function(res){
+      console.log(res);
+    });
 
   }
 
