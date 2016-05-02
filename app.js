@@ -1,12 +1,17 @@
+'use strict';
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
 var port = process.env.PORT || 5000;
+var room = process.env.room || 'portal';
+
 var routes = require('./routes/index');
 var app = express();
+var remote = require('./remote/control.js');
 // var fs = require('fs');
 // This is useful just in development env.
 // var keys = {
@@ -35,51 +40,66 @@ app.use('/', routes);
 
 io.on('connection', function(socket) {
 
-    current = Object.keys(io.sockets.connected).length;
+    socket.on('room', function(room) {
 
-    if (current < 3) {
+        socket.join(room);
 
-        socket.join('portal');
+        current = io.nsps['/'].adapter.rooms[room].length;
 
-        io.emit('join', current);
+        if (current < 3) {
 
-        socket.on('message', function(desc) {
-            io.emit('message', desc);
-        });
+            io.sockets.in(room).emit('join', current);
 
-        socket.on('talk', function(desc) {
-            io.emit('talk', desc);
-        });
+            socket.on('message', function(desc) {
+                io.sockets.in(room).emit('message', desc);
+            });
 
-        socket.on('quiet', function(desc) {
-            io.emit('quiet', desc);
-        });
+            socket.on('talk', function(desc) {
+                io.sockets.in(room).emit('talk', desc);
+            });
 
-        socket.on('refresh', function() {
-            current = 0;
-            io.emit('refresh');
-        });
+            socket.on('quiet', function(desc) {
+                io.sockets.in(room).emit('quiet', desc);
+            });
 
-    } else {
-        socket.emit('redirect', current);
-        //is useless go to the 'disconnect' listener when current>=3
-        return;
-    }
+            socket.on('refresh', function() {
+                io.sockets.in(room).emit('refresh');
+            });
+
+        } else {
+            socket.emit('redirect', current);
+            //is useless go to the 'disconnect' listener when current>=3
+            return;
+        }
+
+    });
+
     socket.on('disconnect', function() {
-        current = Object.keys(io.sockets.connected).length;
-        io.emit('refresh');
+        io.sockets.in(room).emit('refresh');
+        socket.leave(socket.room);
     });
 
 });
 
+app.get('/r/:room', function(req, res) {
+    var room = req.param('room');
+    res.render('portal', {title: 'Test', room: room});
+});
+
 app.post('/off', function(req, res) {
-    io.emit('quiet');
-    res.end();
+    var message = remote.getActionMessage(req.body.token, '/off');
+    if(message.status === 200) {
+        io.sockets.in(room).emit('quiet');
+    }
+    res.json(message);
 });
 
 app.post('/on', function(req, res) {
-    io.emit('talk');
-    res.end();
+    var message = remote.getActionMessage(req.body.token, '/on');
+    if(message.status === 200) {
+        io.sockets.in(room).emit('talk');
+    }
+    res.json(message);
 });
 
 http.listen(port);

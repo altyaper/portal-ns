@@ -1,69 +1,34 @@
 'use strict';
 
-var socket = io(),
+var portalAnimation = new PortalAnimation();
+
+var io;
+var socket = io.connect(),
     pc,
     configuration = null,
     localVideo = document.getElementById('localvideo'),
     remoteVideo = document.getElementById('remotevideo'),
-    canvas = document.getElementById('canvas'),
     flag = false,
     tracks,
     video,
     audio,
-    portalparam = window.location.search.split('=')[1],
-    portal,
-    animation;
+    audioOn = document.getElementById('portalOn'),
+    audioOff = document.getElementById('portalOff'),
+    room = $('#roomid').data('room');
 
-
-var portales = {
-    'cuu' : {
-        'color' : {
-            'r' : 255,
-            'g' : 130,
-            'b' : 0
-        },
-        'greeting' : 'hello Chihuahua'
-    },
-    'hmo' : {
-        'color' : {
-            'r' : 1,
-            'g' : 80,
-            'b' : 255
-        },
-        'greeting' : 'hello HMO'
-    },
-    'cdmx' : {
-        'color' : {
-            'r' : 3,
-            'g' : 40,
-            'b' : 155
-        },
-        'greeting' : 'hello CDMX'
-    },
-    'default': {
-        'color' : {
-            'r' : 50,
-            'g' : 50,
-            'b' : 55
-        }
-    }
-};
-
-if(portalparam) {
-    portal = portales[portalparam];
-}else {
-    portal = portales['default'];
-}
-
+socket.on('connect', function() {
+    socket.emit('room', room);
+});
 
 socket.on('join', function(current) {
 
     if(current === 1) {
         flag = true;
-        comunication(false);
+        portalAnimation.comunication(false);
     }
+
     if(flag === false) {
-        comunication(true);
+        portalAnimation.comunication(true);
         start(true);
     }
 
@@ -71,28 +36,25 @@ socket.on('join', function(current) {
 
 socket.on('talk', function(evt) {
 
-    socket.emit('refresh');
-    // tracks = window.stream.getTracks();
-    // video = tracks[0];
-    // audio = tracks[1];
-    //
-    // video.enabled = true;
-    // audio.enabled = true;
-    //
-    // comunication(true);
+    audioOn.play();
+    video.enabled = true;
+    audio.enabled = true;
+    portalAnimation.comunication(true);
 
 });
 
 socket.on('quiet', function(evt) {
 
     tracks = window.stream.getTracks();
+
     video = tracks[0];
     audio = tracks[1];
 
+    audioOff.play();
     video.enabled = false;
     audio.enabled = false;
 
-    comunication(false);
+    portalAnimation.comunication(false);
 
 });
 
@@ -137,9 +99,8 @@ function start(isCaller) {
 
     // once remote stream arrives, show it in the remote video element
     pc.onaddstream = function (evt) {
-        comunication(true);
+        portalAnimation.comunication(true);
         remoteVideo.src = window.URL.createObjectURL(evt.stream);
-
     };
 
     // Detect when a user disconnect
@@ -151,11 +112,7 @@ function start(isCaller) {
     };
 
     // get the local stream, show it in the local video element and send it
-    navigator.getUserMedia({ 'audio': true, 'video': {
-        'optional': [{'minWidth': '1280'},{'minHeight': '720'}],
-        'mandatory': {}
-    },
-    'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]}, function (stream) {
+    navigator.getUserMedia({ 'audio': true, 'video': true}, function (stream) {
 
         localVideo.src = window.URL.createObjectURL(stream);
         pc.addStream(stream);
@@ -185,6 +142,8 @@ $(window).keyup(function(key) {
 
 function switcher() {
     //This part stop all the LOCAL tracks (Audio and Video)
+    if(!window.stream) return;
+
     tracks = window.stream.getTracks();
     video = tracks[0];
     audio = tracks[1];
@@ -202,83 +161,4 @@ function switcher() {
 
 function logFail (error) {
     console.log(error);
-}
-
-function comunication(enable) {
-    canvas.style.display = (enable)? 'none' : 'inline';
-    if (enable) {
-        stopAnimate();
-    }else {
-        animate();
-    }
-    remoteVideo.style.display = (enable)? 'inline' : 'none';
-    localVideo.style.display = (enable)? 'inline' : 'none';
-}
-
-function stopAnimate() {
-    if (animation !== undefined) {
-        clearInterval(animation);
-        animation = undefined;
-    }
-}
-
-function animate() {
-    animation = setInterval(function() {
-        init();
-    }, 0);
-    return animation;
-}
-
-function init() {
-
-    var palette;
-    var paletteoffset = 0;
-    var cv = document.getElementById('canvas');
-    var ctx = cv.getContext('2d');
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-    var height = cv.height;
-    var width = cv.width;
-    // plasma source width and height
-    var pwidth = 200, pheight = pwidth * (height /width);
-    // scale the plasma source to the canvas width/height
-    var vpx = width /pwidth, vpy = height /pheight;
-    var time = Date.now() / 20;
-
-    // initialisation
-    if (typeof palette === 'undefined') {
-        palette = [];
-        for (var i =0,r,g,b; i <256; i++) {
-            r = ~~(portal.color.r + 0.2 * Math.sin(Math.PI * i / 32));
-            g = ~~(portal.color.g + 10 * Math.sin(Math.PI * i / 64));
-            b = ~~(portal.color.b + 10 * Math.sin(Math.PI * i / 128));
-            palette[i] = 'rgb(' + ~~r + ',' + ~~g + ',' + ~~b + ')';
-        }
-    }
-
-    var dist = function dist (a, b, c, d) {
-        return Math.sqrt((a - c) * (a - c) + (b - d) * (b - d));
-    };
-
-
-
-    var colour = function(x, y) {
-        // plasma function
-        return (128 + (128 * Math.sin(x * 0.0625)) +
-                128 + (128 * Math.sin(y * 0.03125)) +
-                128 + (128 * Math.sin(dist(x + time, y - time, width, height) * 0.125)) +
-                128 + (128 * Math.sin(Math.sqrt(x * x + y * y) * 0.125)) ) * 0.25;
-    };
-
-    // render plasma effect
-    for (var y =0,x; y <pheight; y++) {
-        for (x =0; x <pwidth; x++) {
-            // map plasma pixels to canvas pixels using the virtual pixel size
-            ctx.fillStyle = palette[~~(colour(x, y) + paletteoffset) % 256];
-            ctx.fillRect(Math.floor(x * vpx), Math.floor(y * vpy), Math.ceil(vpx), Math.ceil(vpy));
-        }
-    }
-
-    // palette cycle speed
-    paletteoffset++;
 }

@@ -18,7 +18,9 @@ module.exports = function(grunt) {
               'app.js',
               'public/javascripts/main.js',
               'public/javascripts/portal.js',
-              'test/*.js'
+              'remote/*.js',
+              'test/*.js',
+              'routes/*.js'
             ]
         },
         uglify: {
@@ -68,5 +70,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['jscs','jshint']);
     grunt.registerTask('rebuild', ['cssmin','concat','uglify']);
     grunt.registerTask('travis', ['default','rebuild','mochaTest']);
+    grunt.registerTask('test', ['mochaTest']);
 
 };
