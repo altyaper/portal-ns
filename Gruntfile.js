@@ -55,6 +55,13 @@ module.exports = function(grunt) {
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jscs','jshint','uglify','cssmin']
+        },
+        stylus: {
+            compile: {
+                files: {
+                    'public/stylesheets/style.css': 'public/stylesheets/style.styl'
+                }
+            }
         }
     });
 
@@ -66,9 +73,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
 
     grunt.registerTask('default', ['jscs','jshint']);
-    grunt.registerTask('rebuild', ['cssmin','concat','uglify']);
+    grunt.registerTask('rebuild', ['stylus','cssmin','concat','uglify']);
     grunt.registerTask('travis', ['default','rebuild','mochaTest']);
     grunt.registerTask('test', ['mochaTest']);
 
