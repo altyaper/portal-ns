@@ -9,7 +9,7 @@ if(process.env.NODE_ENV == "production"){
 
 }else{
 
-  host = "https://dev-portal-ns.herokuapp.com";
+  host = "http://localhost:5000";
   token = '1B724F94C3EDC1DA6FD7294D1C611';
 
 }
