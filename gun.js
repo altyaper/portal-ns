@@ -1,8 +1,8 @@
 var wpi = require("wiring-pi"),
     http = require("http"),
+    config = require("./config"),
+    host = config.host,
     port = process.env.PORT || 5000,
-    host = "https://portal-ns.herokuapp.com",
-    //host = "dev-portal-ns.herokuapp.com",
     method = "POST",
     restler = require('restler');
 
@@ -14,7 +14,7 @@ var B = 12;
 var j = 0;
 var ledOn = true;
 var ascend = true;
-var myToken = '1B724F94C3EDC1DA6FD7294D1C611';
+var myToken = config.token;
 wpi.setup("phys");
 wpi.pinMode(IRin, wpi.INPUT);
 wpi.pinMode(B, wpi.OUTPUT);
@@ -26,7 +26,7 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
 //This part stop all the LOCAL tracks (Audio and Video)
   //ledOn = !ledOn;
   if(!cut_video){
-	console.log(" ---> ON");  
+	console.log(" ---> ON");
     restler.post(host+"/on", {
 		data:{
 			'token': myToken
@@ -37,7 +37,7 @@ wpi.wiringPiISR(IRin, wpi.INT_EDGE_FALLING, function(){
 	});
 
   } else {
-	console.log(" ---> OFF");  
+	console.log(" ---> OFF");
     restler.post(host+"/off", {
 		data:{
 			'token': myToken
@@ -64,7 +64,7 @@ setInterval(function(){
     else j--;
   }
   else writePWMHillo(100);
-  
+
 },10);
 
 writePWMHillo = function(i) {

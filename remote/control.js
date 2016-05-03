@@ -1,5 +1,7 @@
 'use strict';
-var token = process.env.token || '1B724F94C3EDC1DA6FD7294D1C611';
+
+var config = require('../config');
+var token = config.token;
 
 function getActionMessage(mytoken, path) {
     var message;
