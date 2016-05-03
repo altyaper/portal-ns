@@ -2,7 +2,8 @@
 
 require('should');
 var app = require('../app');
-var token = '1B724F94C3EDC1DA6FD7294D1C611';
+var config = require('../config');
+var token = config.token;
 var request = require('supertest');
 var io = require('socket.io-client');
 var socketURL = 'http://localhost:5000';
