@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'concat.dist.dest': ['concat.dist.dest']
+                    'public/javascripts/portal.min.js': ['public/javascripts/portal.min.js']
                 }
             }
         },
@@ -57,11 +57,11 @@ module.exports = function(grunt) {
             tasks: ['jscs','jshint','uglify','cssmin']
         },
         stylus: {
-          compile: {
-            files: {
-              'public/stylesheets/style.css': 'public/stylesheets/style.styl'
+            compile: {
+                files: {
+                    'public/stylesheets/style.css': 'public/stylesheets/style.styl'
+                }
             }
-          }
         }
     });
 
