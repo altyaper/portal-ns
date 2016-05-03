@@ -4,7 +4,6 @@ logs
 .DS_Store
 style.css
 
-
 # Runtime data
 pids
 *.pid
